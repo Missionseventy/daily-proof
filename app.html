@@ -1,119 +1,112 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Daily Proof</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Daily Proof · Today</title>
   <link rel="stylesheet" href="./css/styles.css" />
 </head>
 <body>
+
   <header class="topbar">
-    <div class="brand">Daily Proof<span class="dot">·</span></div>
+    <div class="brand">
+      <div class="logoText">Daily Proof <span class="dot">•</span></div>
+    </div>
+
     <nav class="nav">
-      <button class="modePill" id="themeBtn" type="button">Night</button>
-      <button class="linklike" id="exportBtn" type="button">Export</button>
+      <button class="pillToggle" id="themeBtn" type="button" aria-label="Toggle theme">
+        <span class="pillOption" data-pill="day">Day</span>
+        <span class="pillOption" data-pill="night">Night</span>
+        <span class="pillKnob" aria-hidden="true"></span>
+      </button>
+      <button class="navLink" id="exportBtn" type="button">Export</button>
     </nav>
   </header>
 
-  <main class="container gridApp">
-    <!-- DAILY CARD -->
-    <section class="card dailyCard">
-      <div class="dailyTop">
-        <div>
-          <h2 class="dailyTitle">Today</h2>
-          <p class="muted dailyMeta">
-            <span id="todayStr"></span>
-            <span class="sep">•</span>
-            <span id="trialStatus"></span>
-          </p>
-        </div>
+  <main class="container app">
+
+    <section class="card todayCard">
+      <div class="row between">
+        <h2>Today</h2>
+        <div id="trialStatus" class="muted small"></div>
       </div>
 
-      <!-- TIMER -->
-      <div class="timerWrap">
+      <div class="muted small" id="todayStr"></div>
+
+      <div class="timerBox">
         <div class="timer" id="timer">00:00:00</div>
-        <div class="row">
+
+        <div class="row gap">
           <button class="btn primary" id="startTimerBtn" type="button">Start</button>
           <button class="btn" id="resetTimerBtn" type="button">Reset</button>
         </div>
-        <p class="muted">Start when you begin. Stop when you’re done.</p>
+
+        <p class="muted small">Start when you begin. Pause when you need. Resume and finish.</p>
       </div>
 
-      <div class="divider"></div>
+      <hr class="line"/>
 
-      <!-- FOCUS (still visible, compact) -->
-      <div class="focusWrap">
-        <div class="focusHeader">
-          <h3 class="sectionTitle">Focus</h3>
-          <button class="miniLink" id="toggleFocusBtn" type="button">Edit</button>
-        </div>
+      <div class="row between">
+        <h3>Focus</h3>
+        <button class="linkBtn" id="toggleFocusBtn" type="button">Edit</button>
+      </div>
 
-        <p class="muted">Active focus (tap to switch)</p>
-        <div id="focusPills" class="focusPills"></div>
-        <p id="focusEmpty" class="muted">No focus yet. Add one below.</p>
+      <p class="muted small">Active focus (tap to switch)</p>
+      <div id="focusPills" class="pills"></div>
+      <div id="focusEmpty" class="muted small">No focus yet. Add one below.</div>
 
-        <!-- Collapsible focus editor -->
-        <div id="focusEditor" class="collapse">
-          <div class="divider"></div>
-          <label class="label" for="focusInput">Add a focus:</label>
-          <input id="focusInput" class="input" placeholder="e.g. Daily Proof, Videos, Driving" />
-
-          <div class="row">
-            <button class="btn primary" id="addFocusBtn" type="button">Add</button>
-            <button class="btn" id="clearFocusesBtn" type="button">Clear today</button>
-          </div>
+      <div id="focusEditor" class="panel">
+        <label class="muted small">Add a focus:</label>
+        <input id="focusInput" class="input" placeholder="e.g. Daily Proof, Videos, Driving" />
+        <div class="row gap">
+          <button class="btn primary" id="addFocusBtn" type="button">Add</button>
+          <button class="btn" id="clearFocusesBtn" type="button">Clear today</button>
         </div>
       </div>
 
-      <div class="divider"></div>
-
-      <!-- ACTION BAR (one-scroll friendly) -->
-      <div class="actionBar">
+      <div class="row gap topGap">
         <button class="btn primary" id="openProofBtn" type="button">Add proof</button>
         <button class="btn" id="openSessionsBtn" type="button">Sessions</button>
       </div>
 
-      <p class="muted" id="savedTime">Saved time today: 0 min</p>
-      <p class="muted">Your data lives on your device. Always.</p>
+      <p class="muted small topGap" id="savedTime">Saved time today: 0 min</p>
+      <p class="micro">Your data lives on your device. Always.</p>
+    </section>
 
-      <!-- COLLAPSIBLE PROOF -->
-      <div id="proofPanel" class="collapsePanel">
-        <div class="divider"></div>
+    <!-- Proof panel -->
+    <section id="proofPanel" class="card modal">
+      <div class="row between">
+        <h2>Proof</h2>
+        <button class="linkBtn" id="closeProofBtn" type="button">Close</button>
+      </div>
 
-        <h3 class="sectionTitle">Proof</h3>
-        <label class="label" for="entryText">What did you do in this session?</label>
-        <textarea id="entryText" class="textarea" rows="5" placeholder="Write one honest paragraph."></textarea>
+      <label class="muted small">What did you do in this session?</label>
+      <textarea id="entryText" class="textarea" placeholder="Write one honest paragraph."></textarea>
 
-        <div class="row">
-          <button class="btn primary" id="saveSessionBtn" type="button">Save session</button>
-          <button class="btn danger" id="deleteLastBtn" type="button">Delete last</button>
-          <button class="btn" id="closeProofBtn" type="button">Close</button>
-        </div>
+      <div class="row gap">
+        <button class="btn primary" id="saveSessionBtn" type="button">Save session</button>
+        <button class="btn danger" id="deleteLastBtn" type="button">Delete last</button>
       </div>
     </section>
 
-    <!-- COLLAPSIBLE SESSIONS (separate card, but collapsible on mobile) -->
-    <section class="card sessionsCard" id="sessionsPanel">
-      <div class="sessionsHeader">
-        <div>
-          <h2 style="margin:0 0 6px;">Sessions</h2>
-          <p class="muted" style="margin:0;">Today’s record.</p>
-        </div>
-        <button class="btn" id="closeSessionsBtn" type="button">Close</button>
+    <!-- Sessions panel -->
+    <section id="sessionsPanel" class="card modal">
+      <div class="row between">
+        <h2>Sessions</h2>
+        <button class="linkBtn" id="closeSessionsBtn" type="button">Close</button>
       </div>
+      <p class="muted small">Today’s record.</p>
 
+      <div id="sessionsEmpty" class="muted small">No sessions yet.</div>
       <div id="sessionsList" class="sessions"></div>
-      <p id="sessionsEmpty" class="muted">No sessions yet.</p>
     </section>
+
   </main>
 
   <footer class="footer">
-    <span class="brandFooter">Daily Proof<span class="dot">·</span></span>
+    Daily Proof <span class="dot">•</span>
   </footer>
 
   <script src="./js/app.js"></script>
 </body>
 </html>
-
-
-
