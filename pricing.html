@@ -1,59 +1,62 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" data-theme="night">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Daily Proof — Pricing</title>
-  <link rel="stylesheet" href="css/styles.css" />
-  <script src="js/landing.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Daily Proof · Pricing</title>
+  <link rel="stylesheet" href="./css/styles.css" />
 </head>
 <body>
+
   <header class="topbar">
-    <div class="brand">Daily Proof<span class="dot">·</span></div>
+    <div class="brand">
+      <div class="logoText">Daily Proof <span class="dot">•</span></div>
+    </div>
+
     <nav class="nav">
-      <a id="homeLink" class="navLink" href="index.html">Home</a>
-      <button id="themeBtn" class="modePill" type="button">Night</button>
+      <a class="navLink" href="./index.html" id="homeLink">Home</a>
+      <button class="pillToggle" id="themeBtn" type="button" aria-label="Toggle theme">
+        <span class="pillOption" data-pill="day">Day</span>
+        <span class="pillOption" data-pill="night">Night</span>
+        <span class="pillKnob" aria-hidden="true"></span>
+      </button>
     </nav>
   </header>
 
-  <main class="container">
+  <main class="container pricing">
     <section class="hero">
       <h1>Choose your path</h1>
-      <p class="lead">Simple pricing. Your data stays on your device.</p>
+      <p class="sub">Simple pricing. Your data stays on your device.</p>
       <p class="muted">7-day trial • cancel anytime.</p>
     </section>
 
-    <section class="card priceCard">
-      <h2>$7 / month</h2>
-      <p class="muted">Card required. Trial enabled via checkout.</p>
-      <button id="monthlyBtn" class="btn primary" type="button">Continue</button>
+    <section class="stack">
+      <div class="priceCard card">
+        <h2>$7 / month</h2>
+        <p class="muted">Card required. Trial enabled via checkout.</p>
+        <button class="btn primary" id="monthlyBtn" type="button">Continue</button>
+      </div>
+
+      <div class="priceCard card">
+        <h2>$70 lifetime</h2>
+        <p class="muted">One payment. Yours forever.</p>
+        <button class="btn primary" id="lifetimeBtn" type="button">Continue</button>
+      </div>
+
+      <div class="priceCard card">
+        <h2>7-day trial</h2>
+        <p class="muted">Try it first. Keep it if it helps.</p>
+        <button class="btn" id="startTrialBtn" type="button">Start trial</button>
+      </div>
     </section>
 
-    <section class="card priceCard">
-      <h2>$70 lifetime</h2>
-      <p class="muted">One payment. Yours forever.</p>
-      <button id="lifetimeBtn" class="btn primary" type="button">Continue</button>
-    </section>
-
-    <section class="card priceCard">
-      <h2>7-day trial</h2>
-      <p class="muted">Try it first. Keep it if it helps.</p>
-      <button id="startTrialBtn" class="btn" type="button">Start trial</button>
-    </section>
-
-    <p class="muted center">Your data lives on your device. Always.</p>
+    <p class="micro center">Your data lives on your device. Always.</p>
   </main>
 
   <footer class="footer">
-    <span class="brandFooter">Daily Proof<span class="dot">·</span></span>
+    Daily Proof <span class="dot">•</span>
   </footer>
+
+  <script src="./js/landing.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
