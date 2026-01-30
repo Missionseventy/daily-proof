@@ -1,57 +1,56 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="night">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Daily Proof · Pricing</title>
-  <link rel="stylesheet" href="./css/styles.css" />
+  <title>Daily Proof — Pricing</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="js/landing.js" defer></script>
 </head>
 <body>
   <header class="topbar">
     <div class="brand">Daily Proof<span class="dot">·</span></div>
     <nav class="nav">
-      <a href="./index.html">Home</a>
-      <button class="modePill" id="themeBtn" type="button">Night</button>
+      <a id="homeLink" class="navLink" href="index.html">Home</a>
+      <button id="themeBtn" class="modePill" type="button">Night</button>
     </nav>
   </header>
 
   <main class="container">
     <section class="hero">
       <h1>Choose your path</h1>
-      <p class="sub">Simple pricing. Your data stays on your device.</p>
+      <p class="lead">Simple pricing. Your data stays on your device.</p>
       <p class="muted">7-day trial • cancel anytime.</p>
     </section>
 
-    <section class="card">
+    <section class="card priceCard">
       <h2>$7 / month</h2>
       <p class="muted">Card required. Trial enabled via checkout.</p>
-      <!-- Replace # with your Stripe payment link -->
-      <a class="btn primary" id="monthlyLink" href="#" target="_blank" rel="noopener">Continue</a>
+      <button id="monthlyBtn" class="btn primary" type="button">Continue</button>
     </section>
 
-    <section class="card">
+    <section class="card priceCard">
       <h2>$70 lifetime</h2>
       <p class="muted">One payment. Yours forever.</p>
-      <!-- Replace # with your Stripe payment link -->
-      <a class="btn primary" id="lifetimeLink" href="#" target="_blank" rel="noopener">Continue</a>
+      <button id="lifetimeBtn" class="btn primary" type="button">Continue</button>
     </section>
 
-    <section class="card">
+    <section class="card priceCard">
       <h2>7-day trial</h2>
       <p class="muted">Try it first. Keep it if it helps.</p>
-      <button class="btn" id="trialBtn" type="button">Start trial</button>
+      <button id="startTrialBtn" class="btn" type="button">Start trial</button>
     </section>
 
-    <p class="muted">Your data lives on your device. Always.</p>
+    <p class="muted center">Your data lives on your device. Always.</p>
   </main>
 
   <footer class="footer">
     <span class="brandFooter">Daily Proof<span class="dot">·</span></span>
   </footer>
-
-  <script src="./js/pricing.js"></script>
 </body>
 </html>
+
+
 
 
 
