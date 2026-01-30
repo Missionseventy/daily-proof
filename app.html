@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daily Proof</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Daily Proof<span class="dot">·</span></div>
+    <nav class="nav">
+      <button class="modePill" id="themeBtn" type="button">Night</button>
+      <button class="linklike" id="exportBtn" type="button">Export</button>
+    </nav>
+  </header>
+
+  <main class="container gridApp">
+    <!-- DAILY CARD -->
+    <section class="card dailyCard">
+      <div class="dailyTop">
+        <div>
+          <h2 class="dailyTitle">Today</h2>
+          <p class="muted dailyMeta">
+            <span id="todayStr"></span>
+            <span class="sep">•</span>
+            <span id="trialStatus"></span>
+          </p>
+        </div>
+      </div>
+
+      <!-- TIMER -->
+      <div class="timerWrap">
+        <div class="timer" id="timer">00:00:00</div>
+        <div class="row">
+          <button class="btn primary" id="startTimerBtn" type="button">Start</button>
+          <button class="btn" id="resetTimerBtn" type="button">Reset</button>
+        </div>
+        <p class="muted">Start when you begin. Stop when you’re done.</p>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- FOCUS (still visible, compact) -->
+      <div class="focusWrap">
+        <div class="focusHeader">
+          <h3 class="sectionTitle">Focus</h3>
+          <button class="miniLink" id="toggleFocusBtn" type="button">Edit</button>
+        </div>
+
+        <p class="muted">Active focus (tap to switch)</p>
+        <div id="focusPills" class="focusPills"></div>
+        <p id="focusEmpty" class="muted">No focus yet. Add one below.</p>
+
+        <!-- Collapsible focus editor -->
+        <div id="focusEditor" class="collapse">
+          <div class="divider"></div>
+          <label class="label" for="focusInput">Add a focus:</label>
+          <input id="focusInput" class="input" placeholder="e.g. Daily Proof, Videos, Driving" />
+
+          <div class="row">
+            <button class="btn primary" id="addFocusBtn" type="button">Add</button>
+            <button class="btn" id="clearFocusesBtn" type="button">Clear today</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- ACTION BAR (one-scroll friendly) -->
+      <div class="actionBar">
+        <button class="btn primary" id="openProofBtn" type="button">Add proof</button>
+        <button class="btn" id="openSessionsBtn" type="button">Sessions</button>
+      </div>
+
+      <p class="muted" id="savedTime">Saved time today: 0 min</p>
+      <p class="muted">Your data lives on your device. Always.</p>
+
+      <!-- COLLAPSIBLE PROOF -->
+      <div id="proofPanel" class="collapsePanel">
+        <div class="divider"></div>
+
+        <h3 class="sectionTitle">Proof</h3>
+        <label class="label" for="entryText">What did you do in this session?</label>
+        <textarea id="entryText" class="textarea" rows="5" placeholder="Write one honest paragraph."></textarea>
+
+        <div class="row">
+          <button class="btn primary" id="saveSessionBtn" type="button">Save session</button>
+          <button class="btn danger" id="deleteLastBtn" type="button">Delete last</button>
+          <button class="btn" id="closeProofBtn" type="button">Close</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLLAPSIBLE SESSIONS (separate card, but collapsible on mobile) -->
+    <section class="card sessionsCard" id="sessionsPanel">
+      <div class="sessionsHeader">
+        <div>
+          <h2 style="margin:0 0 6px;">Sessions</h2>
+          <p class="muted" style="margin:0;">Today’s record.</p>
+        </div>
+        <button class="btn" id="closeSessionsBtn" type="button">Close</button>
+      </div>
+
+      <div id="sessionsList" class="sessions"></div>
+      <p id="sessionsEmpty" class="muted">No sessions yet.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span class="brandFooter">Daily Proof<span class="dot">·</span></span>
+  </footer>
+
+  <script src="./js/app.js"></script>
+</body>
+</html>
+
+
+
