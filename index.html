@@ -1,38 +1,45 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" data-theme="night">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Daily Proof</title>
-  <link rel="stylesheet" href="css/styles.css" />
-  <script src="js/landing.js" defer></script>
+  <link rel="stylesheet" href="./css/styles.css" />
 </head>
 <body>
+
   <header class="topbar">
-    <div class="brand">Daily Proof<span class="dot">·</span></div>
+    <div class="brand">
+      <div class="logoText">Daily Proof <span class="dot">•</span></div>
+    </div>
+
     <nav class="nav">
-      <a id="pricingLink" class="navLink" href="pricing.html">Start</a>
-      <button id="themeBtn" class="modePill" type="button">Night</button>
+      <a class="navLink" href="./pricing.html" id="startLink">Start</a>
+      <button class="pillToggle" id="themeBtn" type="button" aria-label="Toggle theme">
+        <span class="pillOption" data-pill="day">Day</span>
+        <span class="pillOption" data-pill="night">Night</span>
+        <span class="pillKnob" aria-hidden="true"></span>
+      </button>
     </nav>
   </header>
 
-  <main class="container">
+  <main class="container landing">
     <section class="hero">
       <h1>Proof that you showed up.</h1>
-      <p class="lead">
+      <p class="sub">
         One focus for the day. Multiple sessions. A record you can’t argue with.
       </p>
 
       <div class="ctaRow">
-        <button id="useNowBtn" class="btn primary" type="button">Use it now</button>
+        <a class="btn primary" href="./pricing.html">Use it now</a>
       </div>
 
-      <p class="muted center">Your data lives on your device. Always.</p>
+      <p class="micro">Your data lives on your device. Always.</p>
     </section>
 
     <section class="card">
       <h2>How it works</h2>
-      <ol>
+      <ol class="steps">
         <li>Add your focuses for today (e.g., Daily Proof, Videos, Driving).</li>
         <li>Pick one focus and run a session with the timer.</li>
         <li>Save a short note. Sessions stack into a daily record.</li>
@@ -42,18 +49,19 @@
 
     <section class="card">
       <h2>What it looks like</h2>
-      <div class="preview">
-        <img src="assets/app.png" alt="Daily Proof screenshot" />
-      </div>
-      <p class="muted">Simple on purpose.</p>
+      <p class="muted">Live preview updated soon.</p>
     </section>
   </main>
 
   <footer class="footer">
-    <span class="brandFooter">Daily Proof<span class="dot">·</span></span>
+    Daily Proof <span class="dot">•</span>
   </footer>
+
+  <script src="./js/landing.js"></script>
 </body>
 </html>
+
+
 
 
 
