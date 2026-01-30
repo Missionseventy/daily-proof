@@ -10,7 +10,7 @@ const PAID_KEY  = "dp_paid"; // "monthly" | "lifetime" (local flag for now)
 const SESSIONS_KEY = "dp_sessions";
 const ACTIVE_FOCUS_KEY = "dp_active_focus";
 
-// One list of focuses per day (keyed by date)
+// ---------- Date helpers ----------
 function isoDate(d = new Date()){
   const yyyy = d.getFullYear();
   const mm = String(d.getMonth()+1).padStart(2,"0");
@@ -24,8 +24,21 @@ const FOCUSES_KEY = `dp_focuses_${todayISO}`;
 function hasAccess(){
   return !!localStorage.getItem(TRIAL_KEY) || !!localStorage.getItem(PAID_KEY);
 }
+function getTrialDaysUsed(){
+  const start = localStorage.getItem(TRIAL_KEY);
+  if (!start) return null;
+  return Math.floor((Date.now() - new Date(start)) / (1000*60*60*24));
+}
+function isPaid(){
+  return !!localStorage.getItem(PAID_KEY);
+}
+function canSave(){
+  if (isPaid()) return true;
+  const days = getTrialDaysUsed();
+  if (days === null) return false;
+  return days < 7;
+}
 if (!hasAccess()){
-  // If you prefer open access during build mode, comment this out:
   window.location.href = "./pricing.html";
 }
 
@@ -73,17 +86,20 @@ function toggle(el){ el?.classList.toggle("show"); }
 
 todayStr.textContent = new Date().toDateString();
 
-// ---------- Theme ----------
+// ---------- Theme (pill toggle) ----------
 function setTheme(theme){
   document.documentElement.dataset.theme = theme;
   localStorage.setItem(THEME_KEY, theme);
-  if (themeBtn) themeBtn.textContent = theme === "day" ? "Day" : "Night";
 }
-themeBtn?.addEventListener("click", ()=>{
-  const cur = localStorage.getItem(THEME_KEY) || "night";
-  setTheme(cur === "day" ? "night" : "day");
-});
-setTheme(localStorage.getItem(THEME_KEY) || "night");
+function initTheme(){
+  const saved = localStorage.getItem(THEME_KEY) || "night";
+  setTheme(saved);
+  themeBtn?.addEventListener("click", ()=>{
+    const cur = localStorage.getItem(THEME_KEY) || "night";
+    setTheme(cur === "night" ? "day" : "night");
+  });
+}
+initTheme();
 
 // ---------- JSON helpers ----------
 function loadJSON(key, fallback){
@@ -98,20 +114,6 @@ function saveJSON(key, value){
 }
 
 // ---------- Trial / Plan status ----------
-function getTrialDaysUsed(){
-  const start = localStorage.getItem(TRIAL_KEY);
-  if (!start) return null;
-  return Math.floor((Date.now() - new Date(start)) / (1000*60*60*24));
-}
-function isPaid(){
-  return !!localStorage.getItem(PAID_KEY);
-}
-function canSave(){
-  if (isPaid()) return true;
-  const days = getTrialDaysUsed();
-  if (days === null) return false; // gated mode: must start trial/plan
-  return days < 7;
-}
 function renderTrial(){
   if (!trialStatus) return;
 
@@ -131,26 +133,22 @@ function renderTrial(){
     return;
   }
 
-  trialStatus.innerHTML = `Trial ended · <a href="pricing.html">Upgrade to keep saving</a>`;
+  trialStatus.innerHTML = `Trial ended · <a href="pricing.html">Upgrade</a>`;
 }
 renderTrial();
 
 // ---------- Collapsible behavior ----------
 openProofBtn?.addEventListener("click", ()=>{
   show(proofPanel);
-  setTimeout(()=> entryText?.focus(), 60);
+  setTimeout(()=> entryText?.focus(), 80);
 });
-closeProofBtn?.addEventListener("click", ()=>{
-  hide(proofPanel);
-});
+closeProofBtn?.addEventListener("click", ()=> hide(proofPanel));
 
 openSessionsBtn?.addEventListener("click", ()=>{
   show(sessionsPanel);
   sessionsPanel?.scrollIntoView({ behavior:"smooth", block:"start" });
 });
-closeSessionsBtn?.addEventListener("click", ()=>{
-  hide(sessionsPanel);
-});
+closeSessionsBtn?.addEventListener("click", ()=> hide(sessionsPanel));
 
 toggleFocusBtn?.addEventListener("click", ()=>{
   toggle(focusEditor);
@@ -170,12 +168,6 @@ function setActiveFocus(name){
 function addFocus(name){
   const clean = (name || "").trim();
   if (!clean) return;
-
-  // If they have access, allow; otherwise block
-  if (!hasAccess()){
-    window.location.href = "./pricing.html";
-    return;
-  }
 
   const exists = focuses.some(f => f.toLowerCase() === clean.toLowerCase());
   if (!exists) focuses.push(clean);
@@ -227,14 +219,12 @@ addFocusBtn?.addEventListener("click", ()=>{
     focusInput.focus();
   }
 });
-
 focusInput?.addEventListener("keydown", (e)=>{
   if (e.key === "Enter"){
     e.preventDefault();
     addFocusBtn?.click();
   }
 });
-
 clearFocusesBtn?.addEventListener("click", ()=>{
   const ok = confirm("Clear all focuses for today?");
   if (!ok) return;
@@ -243,45 +233,61 @@ clearFocusesBtn?.addEventListener("click", ()=>{
 
 renderFocusPills();
 
-// ---------- Timer ----------
+// ---------- Timer (Start → Pause → Resume) ----------
 let seconds = 0;
 let running = false;
+let paused = false;
 let interval = null;
 
 function formatTime(totalSeconds){
-  const hh = String(Math.floor(totalSeconds/3600)).padStart(2,"0");
-  const mm = String(Math.floor((totalSeconds%3600)/60)).padStart(2,"0");
-  const ss = String(totalSeconds%60).padStart(2,"0");
+  const hh = String(Math.floor(totalSeconds / 3600)).padStart(2,"0");
+  const mm = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2,"0");
+  const ss = String(totalSeconds % 60).padStart(2,"0");
   return `${hh}:${mm}:${ss}`;
 }
+
 function renderTimer(){
   if (!timerEl) return;
   timerEl.textContent = formatTime(seconds);
-  if (startBtn) startBtn.textContent = running ? "Stop" : "Start";
+
+  if (!running && !paused) startBtn.textContent = "Start";
+  else if (running) startBtn.textContent = "Pause";
+  else if (paused) startBtn.textContent = "Resume";
 }
-function stopTimer(){
-  if (!running) return;
+
+function startTimer(){
+  running = true;
+  paused = false;
+  interval = setInterval(()=>{ seconds++; renderTimer(); }, 1000);
+  renderTimer();
+}
+function pauseTimer(){
   running = false;
+  paused = true;
   clearInterval(interval);
   interval = null;
   renderTimer();
 }
+function stopTimer(){
+  running = false;
+  paused = false;
+  clearInterval(interval);
+  interval = null;
+  renderTimer();
+}
+
 startBtn?.addEventListener("click", ()=>{
-  if (!running){
-    running = true;
-    interval = setInterval(()=>{
-      seconds++;
-      renderTimer();
-    }, 1000);
-  } else {
-    stopTimer();
-  }
+  if (!running && !paused) startTimer();
+  else if (running) pauseTimer();
+  else if (paused) startTimer();
 });
+
 resetBtn?.addEventListener("click", ()=>{
   stopTimer();
   seconds = 0;
   renderTimer();
 });
+
 renderTimer();
 
 // ---------- Sessions ----------
@@ -306,12 +312,10 @@ function renderSessionsToday(){
 
   if (savedTimeEl) savedTimeEl.textContent = `Saved time today: ${totalMinutesToday()} min`;
 
-  // Update sessions button label with count
   const count = todays.length;
   if (openSessionsBtn) openSessionsBtn.textContent = count ? `Sessions (${count})` : "Sessions";
 
   if (!sessionsListEl) return;
-
   sessionsListEl.innerHTML = "";
 
   if (!todays.length){
@@ -348,7 +352,7 @@ function renderSessionsToday(){
     txt.textContent = s.text || "";
 
     item.appendChild(top);
-    item.appendChild(focusTag);
+    if (s.focus) item.appendChild(focusTag);
     item.appendChild(txt);
 
     sessionsListEl.appendChild(item);
@@ -358,7 +362,7 @@ renderSessionsToday();
 
 // Save session
 saveSessionBtn?.addEventListener("click", ()=>{
-  stopTimer();
+  pauseTimer();
 
   if (!canSave()){
     alert("Trial ended. Upgrade to keep saving sessions.");
@@ -402,10 +406,9 @@ saveSessionBtn?.addEventListener("click", ()=>{
 
   if (entryText) entryText.value = "";
   seconds = 0;
-  renderTimer();
+  stopTimer();
   renderSessionsToday();
 
-  // Collapse proof after saving (Jiro-like)
   hide(proofPanel);
 });
 
@@ -451,3 +454,4 @@ exportBtn?.addEventListener("click", ()=>{
 
   URL.revokeObjectURL(url);
 });
+
