@@ -1,70 +1,53 @@
-// Daily Proof — landing.js (FULL)
-// Works on index.html + pricing.html
-// - Theme toggle (Day/Night)
-// - Landing CTA -> Pricing
-// - Start Trial / Monthly / Lifetime -> app.html (local placeholder until Stripe)
-
+// landing.js — shared for index.html + pricing.html
 const THEME_KEY = "dp_theme";
 const TRIAL_KEY = "dp_trial_start";
-const PAID_KEY  = "dp_paid"; // "monthly" | "lifetime"
+const PAID_KEY  = "dp_paid"; // "monthly" | "lifetime" local flag for now
 
-// ---------- Theme ----------
-function setTheme(theme) {
+function setTheme(theme){
   document.documentElement.dataset.theme = theme;
   localStorage.setItem(THEME_KEY, theme);
-
-  const btn = document.getElementById("themeBtn");
-  if (btn) btn.textContent = theme === "day" ? "Day" : "Night";
 }
 
-function initTheme() {
+function initThemePill(){
+  const btn = document.getElementById("themeBtn");
+  if (!btn) return;
+
   const saved = localStorage.getItem(THEME_KEY) || "night";
   setTheme(saved);
 
-  const btn = document.getElementById("themeBtn");
-  btn?.addEventListener("click", () => {
+  btn.addEventListener("click", () => {
     const cur = localStorage.getItem(THEME_KEY) || "night";
-    setTheme(cur === "day" ? "night" : "day");
+    setTheme(cur === "night" ? "day" : "night");
   });
 }
 
-// ---------- Navigation ----------
-function go(url) {
-  window.location.href = url;
-}
-
-// ---------- Access (local placeholder) ----------
-function startTrial() {
+function startTrial(){
   localStorage.setItem(TRIAL_KEY, new Date().toISOString());
   localStorage.removeItem(PAID_KEY);
-  go("app.html");
+  window.location.href = "./app.html";
 }
 
-function choosePlan(plan) {
-  localStorage.setItem(PAID_KEY, plan); // "monthly" | "lifetime"
+function choosePlan(plan){
+  localStorage.setItem(PAID_KEY, plan); // placeholder until Stripe
   if (!localStorage.getItem(TRIAL_KEY)) {
     localStorage.setItem(TRIAL_KEY, new Date().toISOString());
   }
-  go("app.html");
+  window.location.href = "./app.html";
 }
 
-// ---------- Wire buttons safely ----------
-function wire() {
-  // Landing CTA
-  document.getElementById("useNowBtn")?.addEventListener("click", () => go("pricing.html"));
+function initPricingButtons(){
+  const trialBtn = document.getElementById("startTrialBtn");
+  const monthlyBtn = document.getElementById("monthlyBtn");
+  const lifetimeBtn = document.getElementById("lifetimeBtn");
 
-  // Pricing CTAs
-  document.getElementById("startTrialBtn")?.addEventListener("click", startTrial);
-  document.getElementById("monthlyBtn")?.addEventListener("click", () => choosePlan("monthly"));
-  document.getElementById("lifetimeBtn")?.addEventListener("click", () => choosePlan("lifetime"));
-
-  // Top nav links (both pages)
-  document.getElementById("homeLink")?.addEventListener("click", (e) => { e.preventDefault(); go("index.html"); });
-  document.getElementById("pricingLink")?.addEventListener("click", (e) => { e.preventDefault(); go("pricing.html"); });
+  trialBtn?.addEventListener("click", startTrial);
+  monthlyBtn?.addEventListener("click", () => choosePlan("monthly"));
+  lifetimeBtn?.addEventListener("click", () => choosePlan("lifetime"));
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  initTheme();
-  wire();
+  initThemePill();
+  initPricingButtons();
 });
+
 
