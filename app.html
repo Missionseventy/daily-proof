@@ -2,111 +2,123 @@
 <html lang="en" data-theme="night">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Daily Proof · Today</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daily Proof · App</title>
+
+  <!-- IMPORTANT: use ./ for GitHub Pages -->
   <link rel="stylesheet" href="./css/styles.css" />
 </head>
+
 <body>
 
-  <header class="topbar">
-    <div class="brand">
-      <div class="logoText">Daily Proof <span class="dot">•</span></div>
+<header class="topbar">
+  <div class="brand">
+    Daily Proof <span class="dot">•</span>
+  </div>
+
+  <nav class="nav">
+    <!-- This is your clear “Start/Home” style link -->
+    <a class="nav-link" href="index.html">Home</a>
+
+    <!-- Theme pill button -->
+    <button id="themeBtn" class="themeBtn" type="button">Night</button>
+
+    <button id="exportBtn" class="btnGhost" type="button">Export</button>
+  </nav>
+</header>
+
+<main class="container appWrap">
+
+  <!-- TODAY -->
+  <section class="card appCard">
+    <div class="rowBetween">
+      <h2 class="h2">Today</h2>
+      <div class="trialText" id="trialStatus"> </div>
     </div>
 
-    <nav class="nav">
-      <button class="pillToggle" id="themeBtn" type="button" aria-label="Toggle theme">
-        <span class="pillOption" data-pill="day">Day</span>
-        <span class="pillOption" data-pill="night">Night</span>
-        <span class="pillKnob" aria-hidden="true"></span>
-      </button>
-      <button class="navLink" id="exportBtn" type="button">Export</button>
-    </nav>
-  </header>
+    <div class="smallRow">
+      <div class="muted" id="todayStr"></div>
+    </div>
 
-  <main class="container app">
+    <div class="timer" id="timer">00:00:00</div>
 
-    <section class="card todayCard">
-      <div class="row between">
-        <h2>Today</h2>
-        <div id="trialStatus" class="muted small"></div>
+    <div class="btnRow">
+      <button class="btnPrimary" id="startTimerBtn" type="button">Start</button>
+      <button class="btn" id="resetTimerBtn" type="button">Reset</button>
+    </div>
+
+    <p class="helper">
+      Start when you begin. Pause when you need. Resume and finish.
+    </p>
+
+    <hr class="hr" />
+
+    <!-- FOCUS -->
+    <div class="rowBetween">
+      <h3 class="h3">Focus</h3>
+      <button id="toggleFocusBtn" class="btnLink" type="button">Edit</button>
+    </div>
+
+    <p class="muted">Active focus (tap to switch)</p>
+
+    <div id="focusPills" class="pillWrap"></div>
+    <div id="focusEmpty" class="muted">No focus yet. Add one below.</div>
+
+    <!-- Focus editor collapsible -->
+    <div id="focusEditor" class="panel">
+      <label class="label">Add a focus:</label>
+      <input id="focusInput" class="input" placeholder="e.g. Daily Proof, Videos, Driving" />
+
+      <div class="btnRow">
+        <button id="addFocusBtn" class="btnPrimary" type="button">Add</button>
+        <button id="clearFocusesBtn" class="btn" type="button">Clear today</button>
       </div>
+    </div>
 
-      <div class="muted small" id="todayStr"></div>
+    <div class="btnRow">
+      <button id="openProofBtn" class="btn" type="button">Add proof</button>
+      <button id="openSessionsBtn" class="btn" type="button">Sessions</button>
+    </div>
 
-      <div class="timerBox">
-        <div class="timer" id="timer">00:00:00</div>
+    <div class="muted" id="savedTime">Saved time today: 0 min</div>
+    <div class="privacyLine">Your data lives on your device. Always.</div>
+  </section>
 
-        <div class="row gap">
-          <button class="btn primary" id="startTimerBtn" type="button">Start</button>
-          <button class="btn" id="resetTimerBtn" type="button">Reset</button>
-        </div>
+  <!-- PROOF PANEL -->
+  <section id="proofPanel" class="sheet">
+    <div class="sheetTop">
+      <div class="sheetTitle">Proof</div>
+      <button id="closeProofBtn" class="btnGhost" type="button">Close</button>
+    </div>
 
-        <p class="muted small">Start when you begin. Pause when you need. Resume and finish.</p>
-      </div>
+    <label class="label">What did you do in this session?</label>
+    <textarea id="entryText" class="textarea" placeholder="Write one honest paragraph."></textarea>
 
-      <hr class="line"/>
+    <div class="btnRow">
+      <button id="saveSessionBtn" class="btnPrimary" type="button">Save session</button>
+      <button id="deleteLastBtn" class="btnDanger" type="button">Delete last</button>
+    </div>
+  </section>
 
-      <div class="row between">
-        <h3>Focus</h3>
-        <button class="linkBtn" id="toggleFocusBtn" type="button">Edit</button>
-      </div>
+  <!-- SESSIONS PANEL -->
+  <section id="sessionsPanel" class="sheet">
+    <div class="sheetTop">
+      <div class="sheetTitle">Sessions</div>
+      <button id="closeSessionsBtn" class="btnGhost" type="button">Close</button>
+    </div>
 
-      <p class="muted small">Active focus (tap to switch)</p>
-      <div id="focusPills" class="pills"></div>
-      <div id="focusEmpty" class="muted small">No focus yet. Add one below.</div>
+    <div id="sessionsEmpty" class="muted">No sessions yet.</div>
+    <div id="sessionsList" class="sessionsList"></div>
+  </section>
 
-      <div id="focusEditor" class="panel">
-        <label class="muted small">Add a focus:</label>
-        <input id="focusInput" class="input" placeholder="e.g. Daily Proof, Videos, Driving" />
-        <div class="row gap">
-          <button class="btn primary" id="addFocusBtn" type="button">Add</button>
-          <button class="btn" id="clearFocusesBtn" type="button">Clear today</button>
-        </div>
-      </div>
+</main>
 
-      <div class="row gap topGap">
-        <button class="btn primary" id="openProofBtn" type="button">Add proof</button>
-        <button class="btn" id="openSessionsBtn" type="button">Sessions</button>
-      </div>
+<footer class="footer">
+  Daily Proof <span class="dot">•</span>
+</footer>
 
-      <p class="muted small topGap" id="savedTime">Saved time today: 0 min</p>
-      <p class="micro">Your data lives on your device. Always.</p>
-    </section>
-
-    <!-- Proof panel -->
-    <section id="proofPanel" class="card modal">
-      <div class="row between">
-        <h2>Proof</h2>
-        <button class="linkBtn" id="closeProofBtn" type="button">Close</button>
-      </div>
-
-      <label class="muted small">What did you do in this session?</label>
-      <textarea id="entryText" class="textarea" placeholder="Write one honest paragraph."></textarea>
-
-      <div class="row gap">
-        <button class="btn primary" id="saveSessionBtn" type="button">Save session</button>
-        <button class="btn danger" id="deleteLastBtn" type="button">Delete last</button>
-      </div>
-    </section>
-
-    <!-- Sessions panel -->
-    <section id="sessionsPanel" class="card modal">
-      <div class="row between">
-        <h2>Sessions</h2>
-        <button class="linkBtn" id="closeSessionsBtn" type="button">Close</button>
-      </div>
-      <p class="muted small">Today’s record.</p>
-
-      <div id="sessionsEmpty" class="muted small">No sessions yet.</div>
-      <div id="sessionsList" class="sessions"></div>
-    </section>
-
-  </main>
-
-  <footer class="footer">
-    Daily Proof <span class="dot">•</span>
-  </footer>
-
-  <script src="./js/app.js"></script>
+<!-- IMPORTANT: use ./ for GitHub Pages -->
+<script src="./js/app.js"></script>
 </body>
 </html>
+
