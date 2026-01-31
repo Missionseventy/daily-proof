@@ -4,71 +4,62 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Daily Proof</title>
-
   <link rel="stylesheet" href="./css/styles.css" />
 </head>
+
 <body>
+  <header class="topbar">
+    <div class="brand">Daily Proof <span class="dot">•</span></div>
 
-<header class="topbar">
-  <div class="brand">
+    <nav class="nav">
+      <a class="nav-link start-link" href="./pricing.html">Start</a>
+      <button id="themeBtn" class="themeBtn" type="button">Night</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Proof that you showed up.</h1>
+      <p class="hero-sub">
+        One focus for the day. Multiple sessions. A record you can’t argue with.
+      </p>
+
+      <a class="cta" href="./pricing.html">Use it now</a>
+
+      <p class="muted">Your data lives on your device. Always.</p>
+    </section>
+
+    <section class="card">
+      <h2>How it works</h2>
+      <ol class="steps">
+        <li>Add your focuses for today (e.g., Daily Proof, Videos, Driving).</li>
+        <li>Pick one focus and run a session with the timer.</li>
+        <li>Save a short note. Sessions stack into a daily record.</li>
+      </ol>
+      <p class="muted">No accounts. No tracking. No servers holding your work.</p>
+    </section>
+
+    <section class="card">
+      <h2>What it looks like</h2>
+      <img
+        src="./assets/app.png"
+        alt="Daily Proof screenshot"
+        class="app-preview"
+        loading="lazy"
+      />
+      <p class="muted">Simple on purpose.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
     Daily Proof <span class="dot">•</span>
-  </div>
+  </footer>
 
-  <nav class="nav">
-    <a href="app.html" class="nav-link start-link">Start</a>
-
-    <div class="theme-toggle">
-      <button id="themeBtn" type="button">Night</button>
-    </div>
-  </nav>
-</header>
-
-<main class="container">
-
-  <section class="hero">
-    <h1>Proof that you showed up.</h1>
-    <p class="hero-sub">
-      One focus for the day. Multiple sessions.  
-      A record you can’t argue with.
-    </p>
-
-    <a href="app.html" class="cta">Use it now</a>
-
-    <p class="muted">Your data lives on your device. Always.</p>
-  </section>
-
-  <section class="card">
-    <h2>How it works</h2>
-    <ol class="steps">
-      <li>Add your focuses for today (e.g., Daily Proof, Videos, Driving).</li>
-      <li>Pick one focus and run a session with the timer.</li>
-      <li>Save a short note. Sessions stack into a daily record.</li>
-    </ol>
-    <p class="muted">No accounts. No tracking. No servers holding your work.</p>
-  </section>
-
-  <section class="card">
-    <h2>What it looks like</h2>
-
-    <img
-      src="./assets/app.png"
-      alt="Daily Proof app screenshot"
-      class="app-preview"
-      loading="lazy"
-    />
-
-    <p class="muted">Simple on purpose.</p>
-  </section>
-
-</main>
-
-<footer class="footer">
-  Daily Proof <span class="dot">•</span>
-</footer>
-
-<script src="./js/landing.js"></script>
+  <script src="./js/landing.js"></script>
 </body>
 </html>
+
+
 
 
 
