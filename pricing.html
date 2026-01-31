@@ -2,55 +2,60 @@
 <html lang="en" data-theme="night">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Daily Proof · Pricing</title>
   <link rel="stylesheet" href="./css/styles.css" />
 </head>
-<body>
 
+<body>
   <header class="topbar">
-    <div class="brand">
-      <div class="logoText">Daily Proof <span class="dot">•</span></div>
-    </div>
+    <div class="brand">Daily Proof <span class="dot">•</span></div>
 
     <nav class="nav">
-      <a class="navLink" href="./index.html" id="homeLink">Home</a>
-      <button class="pillToggle" id="themeBtn" type="button" aria-label="Toggle theme">
-        <span class="pillOption" data-pill="day">Day</span>
-        <span class="pillOption" data-pill="night">Night</span>
-        <span class="pillKnob" aria-hidden="true"></span>
-      </button>
+      <a class="nav-link" href="./index.html">Home</a>
+      <button id="themeBtn" class="themeBtn" type="button">Night</button>
     </nav>
   </header>
 
-  <main class="container pricing">
-    <section class="hero">
-      <h1>Choose your path</h1>
-      <p class="sub">Simple pricing. Your data stays on your device.</p>
-      <p class="muted">7-day trial • cancel anytime.</p>
+  <main class="container">
+    <section class="card">
+      <h2>Choose your path</h2>
+      <p class="muted">Simple pricing. Your data stays on your device.</p>
     </section>
 
-    <section class="stack">
-      <div class="priceCard card">
-        <h2>$7 / month</h2>
-        <p class="muted">Card required. Trial enabled via checkout.</p>
-        <button class="btn primary" id="monthlyBtn" type="button">Continue</button>
-      </div>
+    <!-- Monthly -->
+    <section class="card">
+      <h2>$7 / month</h2>
+      <p class="muted">7-day free trial. Charged after trial ends. Cancel anytime.</p>
 
-      <div class="priceCard card">
-        <h2>$70 lifetime</h2>
-        <p class="muted">One payment. Yours forever.</p>
-        <button class="btn primary" id="lifetimeBtn" type="button">Continue</button>
-      </div>
-
-      <div class="priceCard card">
-        <h2>7-day trial</h2>
-        <p class="muted">Try it first. Keep it if it helps.</p>
-        <button class="btn" id="startTrialBtn" type="button">Start trial</button>
-      </div>
+      <a
+        class="btnPrimary full"
+        href="https://missionseventy.gumroad.com/l/citlrs"
+        target="_blank"
+        rel="noopener"
+      >
+        Start free trial
+      </a>
     </section>
 
-    <p class="micro center">Your data lives on your device. Always.</p>
+    <!-- Lifetime -->
+    <section class="card">
+      <h2>Lifetime</h2>
+      <p class="muted">One-time payment. Own it forever.</p>
+
+      <a
+        class="btnPrimary full"
+        href="https://missionseventy.gumroad.com/l/nscnb"
+        target="_blank"
+        rel="noopener"
+      >
+        Get lifetime access
+      </a>
+    </section>
+
+    <p class="muted center" style="margin-top:14px;">
+      Your data lives on your device. Always.
+    </p>
   </main>
 
   <footer class="footer">
@@ -60,3 +65,5 @@
   <script src="./js/landing.js"></script>
 </body>
 </html>
+
+
