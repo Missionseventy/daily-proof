@@ -23,31 +23,33 @@
       <p class="muted">Simple pricing. Your data stays on your device.</p>
     </section>
 
-    <!-- Monthly -->
+    <!-- MONTHLY -->
     <section class="card">
       <h2>$7 / month</h2>
       <p class="muted">7-day free trial. Charged after trial ends. Cancel anytime.</p>
 
+      <!-- Gumroad Overlay button -->
       <a
-        class="btnPrimary full"
+        class="btnPrimary full gumroadBtn"
         href="https://missionseventy.gumroad.com/l/citlrs"
-        target="_blank"
-        rel="noopener"
+        data-gumroad-overlay="true"
+        data-plan="monthly"
       >
         Start free trial
       </a>
     </section>
 
-    <!-- Lifetime -->
+    <!-- LIFETIME -->
     <section class="card">
       <h2>Lifetime</h2>
       <p class="muted">One-time payment. Own it forever.</p>
 
+      <!-- Gumroad Overlay button -->
       <a
-        class="btnPrimary full"
+        class="btnPrimary full gumroadBtn"
         href="https://missionseventy.gumroad.com/l/nscnb"
-        target="_blank"
-        rel="noopener"
+        data-gumroad-overlay="true"
+        data-plan="lifetime"
       >
         Get lifetime access
       </a>
@@ -62,8 +64,10 @@
     Daily Proof <span class="dot">•</span>
   </footer>
 
+  <!-- Gumroad overlay script (include ONCE on this page) -->
+  <script src="https://gumroad.com/js/gumroad.js"></script>
+
+  <!-- Your site script (theme + overlay unlock handler) -->
   <script src="./js/landing.js"></script>
 </body>
 </html>
-
-
