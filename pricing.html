@@ -1,73 +1,20 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="night">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Daily Proof · Pricing</title>
-  <link rel="stylesheet" href="./css/styles.css" />
-</head>
+<section class="card">
+  <h2>Unlock access</h2>
+  <p class="muted">After checkout, paste your email and (for lifetime) your license key.</p>
 
-<body>
-  <header class="topbar">
-    <div class="brand">Daily Proof <span class="dot">•</span></div>
+  <label class="label">Email</label>
+  <input id="unlockEmail" class="input" placeholder="you@example.com" />
 
-    <nav class="nav">
-      <a class="nav-link" href="./index.html">Home</a>
-      <button id="themeBtn" class="themeBtn" type="button">Night</button>
-    </nav>
-  </header>
+  <label class="label">License key (lifetime)</label>
+  <input id="unlockKey" class="input" placeholder="Optional for monthly" />
 
-  <main class="container">
-    <section class="card">
-      <h2>Choose your path</h2>
-      <p class="muted">Simple pricing. Your data stays on your device.</p>
-    </section>
+  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+    <button class="btn" id="unlockMonthlyBtn">Unlock monthly</button>
+    <button class="btn" id="unlockLifetimeBtn">Unlock lifetime</button>
+  </div>
 
-    <!-- MONTHLY -->
-    <section class="card">
-      <h2>$7 / month</h2>
-      <p class="muted">7-day free trial. Charged after trial ends. Cancel anytime.</p>
+  <p id="unlockMsg" class="muted" style="margin-top:10px;"></p>
+</section>
 
-      <!-- Gumroad Overlay button -->
-      <a
-        class="btnPrimary full gumroadBtn"
-        href="https://missionseventy.gumroad.com/l/citlrs"
-        data-gumroad-overlay="true"
-        data-plan="monthly"
-      >
-        Start free trial
-      </a>
-    </section>
+<script src="./js/unlock.js"></script>
 
-    <!-- LIFETIME -->
-    <section class="card">
-      <h2>Lifetime</h2>
-      <p class="muted">One-time payment. Own it forever.</p>
-
-      <!-- Gumroad Overlay button -->
-      <a
-        class="btnPrimary full gumroadBtn"
-        href="https://missionseventy.gumroad.com/l/nscnb"
-        data-gumroad-overlay="true"
-        data-plan="lifetime"
-      >
-        Get lifetime access
-      </a>
-    </section>
-
-    <p class="muted center" style="margin-top:14px;">
-      Your data lives on your device. Always.
-    </p>
-  </main>
-
-  <footer class="footer">
-    Daily Proof <span class="dot">•</span>
-  </footer>
-
-  <!-- Gumroad overlay script (include ONCE on this page) -->
-  <script src="https://gumroad.com/js/gumroad.js"></script>
-
-  <!-- Your site script (theme + overlay unlock handler) -->
-  <script src="./js/landing.js"></script>
-</body>
-</html>
