@@ -1,20 +1,81 @@
-<section class="card">
-  <h2>Unlock access</h2>
-  <p class="muted">After checkout, paste your email and (for lifetime) your license key.</p>
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daily Proof · Pricing</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
 
-  <label class="label">Email</label>
-  <input id="unlockEmail" class="input" placeholder="you@example.com" />
+<body>
+  <header class="topbar">
+    <div class="brand">Daily Proof <span class="dot">•</span></div>
 
-  <label class="label">License key (lifetime)</label>
-  <input id="unlockKey" class="input" placeholder="Optional for monthly" />
+    <nav class="nav">
+      <a class="nav-link" href="./index.html">Home</a>
+      <button id="themeBtn" class="themeBtn" type="button">Night</button>
+    </nav>
+  </header>
 
-  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
-    <button class="btn" id="unlockMonthlyBtn">Unlock monthly</button>
-    <button class="btn" id="unlockLifetimeBtn">Unlock lifetime</button>
-  </div>
+  <main class="container">
+    <section class="card">
+      <h2>Choose your path</h2>
+      <p class="muted">Payments are handled by Gumroad. Your work stays on your device.</p>
+    </section>
 
-  <p id="unlockMsg" class="muted" style="margin-top:10px;"></p>
-</section>
+    <section class="card">
+      <h2>$7 / month</h2>
+      <p class="muted">7-day trial on Gumroad. Cancel anytime.</p>
 
-<script src="./js/unlock.js"></script>
+      <a class="btnPrimary full"
+         href="https://missionseventy.gumroad.com/l/citlrs"
+         target="_blank" rel="noopener">
+        Continue to checkout
+      </a>
+    </section>
+
+    <section class="card">
+      <h2>Lifetime</h2>
+      <p class="muted">One-time payment. Own it forever.</p>
+
+      <a class="btnPrimary full"
+         href="https://missionseventy.gumroad.com/l/nscnb"
+         target="_blank" rel="noopener">
+        Continue to checkout
+      </a>
+    </section>
+
+    <section class="card">
+      <h2>Unlock access</h2>
+      <p class="muted">After purchase, enter the email used at checkout. For lifetime, add the license key if required.</p>
+
+      <label class="label">Email</label>
+      <input id="unlockEmail" class="input" placeholder="you@example.com" autocomplete="email" />
+
+      <label class="label">License key (lifetime)</label>
+      <input id="unlockKey" class="input" placeholder="optional for monthly" autocomplete="off" />
+
+      <div class="btnRow" style="margin-top:12px;">
+        <button id="unlockMonthlyBtn" class="btn" type="button">Unlock monthly</button>
+        <button id="unlockLifetimeBtn" class="btn" type="button">Unlock lifetime</button>
+      </div>
+
+      <p id="unlockMsg" class="muted" style="margin-top:10px;"></p>
+      <p class="muted small">Your work lives on your device. Always.</p>
+    </section>
+
+    <p class="muted center" style="margin-top:14px;">
+      Daily Proof <span class="dot">•</span>
+    </p>
+  </main>
+
+  <footer class="footer">
+    Daily Proof <span class="dot">•</span>
+  </footer>
+
+  <script src="./js/unlock.js"></script>
+</body>
+</html>
+
+
 
