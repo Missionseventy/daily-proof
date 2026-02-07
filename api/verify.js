@@ -1,65 +1,103 @@
-// /api/verify.js
+// api/verify.js
 import crypto from "crypto";
+import { kv } from "@vercel/kv";
 
-function sha256(input) {
-  return crypto.createHash("sha256").update(input).digest("hex");
+function json(res, status, body) {
+  res.statusCode = status;
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
+  res.setHeader("Cache-Control", "no-store");
+  res.end(JSON.stringify(body));
 }
 
-async function kvGet(key) {
-  const url = process.env.KV_REST_API_URL;
-  const token = process.env.KV_REST_API_TOKEN;
-  if (!url || !token) return null;
-
-  const r = await fetch(`${url}/get/${encodeURIComponent(key)}`, {
-    headers: { Authorization: `Bearer ${token}` },
+function getRawBody(req) {
+  return new Promise((resolve, reject) => {
+    let data = "";
+    req.on("data", (chunk) => (data += chunk));
+    req.on("end", () => resolve(data));
+    req.on("error", reject);
   });
+}
 
-  if (!r.ok) return null;
-  const data = await r.json();
-  return data?.result ?? null;
+function safeCompare(a = "", b = "") {
+  const aa = Buffer.from(String(a));
+  const bb = Buffer.from(String(b));
+  if (aa.length !== bb.length) return false;
+  return crypto.timingSafeEqual(aa, bb);
 }
 
 export default async function handler(req, res) {
-  // CORS + no-cache (important so it doesn't “stick”)
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  res.setHeader("Cache-Control", "no-store, max-age=0");
-
-  if (req.method === "OPTIONS") return res.status(204).end();
-
-  // ✅ This fixes your browser test: GET should work
-  if (req.method === "GET" && !req.query.email) {
-    return res.status(200).json({
+  // ✅ GET = simple test from browser
+  if (req.method === "GET") {
+    return json(res, 200, {
       ok: true,
       message: "verify endpoint live (GET works)",
+      hasKV: !!process.env.KV_REST_API_URL && !!process.env.KV_REST_API_TOKEN,
+      hasSecret: !!process.env.WEBHOOK_SECRET,
     });
   }
 
-  if (req.method !== "GET" && req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+  // ✅ POST = Gumroad webhook (or manual curl)
+  if (req.method !== "POST") {
+    return json(res, 405, { ok: false, error: "Method not allowed" });
   }
 
-  const email =
-    req.method === "GET"
-      ? (req.query.email || "").toString().trim().toLowerCase()
-      : (req.body?.email || "").toString().trim().toLowerCase();
+  const secret = process.env.WEBHOOK_SECRET || "";
+  if (!secret) {
+    return json(res, 500, { ok: false, error: "Missing WEBHOOK_SECRET" });
+  }
 
-  if (!email) return res.status(400).json({ error: "Missing email" });
+  // We support either header style:
+  // - x-webhook-secret: <secret> (simple)
+  // - x-signature: hmac_sha256(rawBody, secret) (stronger)
+  const headerSecret = req.headers["x-webhook-secret"];
+  const signature = req.headers["x-signature"];
 
-  const emailHash = sha256(email);
+  const raw = await getRawBody(req);
 
-  // Keys written by Gumroad Ping webhook (Option C)
-  const lifetimeKey = `access:lifetime:${emailHash}`;
-  const monthlyKey = `access:monthly:${emailHash}`;
+  // If x-signature is present, verify HMAC
+  if (signature) {
+    const expected = crypto
+      .createHmac("sha256", secret)
+      .update(raw)
+      .digest("hex");
 
-  const lifetime = await kvGet(lifetimeKey);
-  const monthly = await kvGet(monthlyKey);
+    if (!safeCompare(signature, expected)) {
+      return json(res, 401, { ok: false, error: "Invalid signature" });
+    }
+  } else {
+    // Otherwise fall back to simple shared-secret header
+    if (!safeCompare(headerSecret, secret)) {
+      return json(res, 401, { ok: false, error: "Invalid webhook secret" });
+    }
+  }
 
-  return res.status(200).json({
+  // Parse payload
+  let payload = {};
+  try {
+    payload = raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    return json(res, 400, { ok: false, error: "Invalid JSON body" });
+  }
+
+  // Minimal data we store (privacy-first):
+  // store only purchase proof tokens / emails hash if you want later
+  const email = (payload.email || "").trim().toLowerCase();
+  const productId = payload.product_id || payload.product_permalink || "unknown";
+  const saleId = payload.sale_id || payload.order_id || crypto.randomUUID();
+
+  // You can decide what your "proof key" is.
+  // For now: allow "email + productId"
+  const key = email ? `proof:${productId}:${email}` : `proof:${productId}:${saleId}`;
+
+  // Store a tiny record
+  const record = {
     ok: true,
-    emailHash,
-    access: Boolean(lifetime || monthly),
-    plan: lifetime ? "lifetime" : monthly ? "monthly" : null,
-  });
+    productId,
+    saleId,
+    createdAt: new Date().toISOString(),
+  };
+
+  await kv.set(key, record);
+
+  return json(res, 200, { ok: true, stored: true, key });
 }
