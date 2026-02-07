@@ -1,112 +1,93 @@
 // api/verify.js
-// Vercel Serverless Function: verifies Gumroad purchase/subscription (Option C)
-
 export default async function handler(req, res) {
+  // --- CORS (safe defaults) ---
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+
+  // Allow BOTH GET (browser testing) and POST (app)
+  if (req.method !== "GET" && req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
   try {
-    if (req.method !== "POST") {
-      return res.status(405).json({ error: "Method not allowed" });
+    // Read inputs from GET query or POST body
+    const email =
+      (req.method === "GET" ? req.query.email : req.body?.email) || "";
+    const plan =
+      (req.method === "GET" ? req.query.plan : req.body?.plan) || "monthly";
+
+    const cleanedEmail = String(email).trim().toLowerCase();
+    const cleanedPlan = String(plan).trim().toLowerCase();
+
+    if (!cleanedEmail) {
+      return res.status(400).json({ ok: false, error: "Missing email" });
     }
 
-    const { plan, email, license_key } = req.body || {};
-    const cleanEmail = String(email || "").trim().toLowerCase();
-
-    if (!cleanEmail || !cleanEmail.includes("@")) {
-      return res.status(400).json({ error: "Valid email required" });
-    }
-
+    // ENV VARS (set these in Vercel Project Settings → Environment Variables)
     const accessToken = process.env.GUMROAD_ACCESS_TOKEN;
-    const monthlyPermalink = process.env.GUMROAD_MONTHLY_PERMALINK;   // citlrs
-    const lifetimePermalink = process.env.GUMROAD_LIFETIME_PERMALINK; // nscnb
+    const monthlyPermalink = process.env.GUMROAD_MONTHLY_PERMALINK;
+    const lifetimePermalink = process.env.GUMROAD_LIFETIME_PERMALINK;
 
-    if (!accessToken || !monthlyPermalink || !lifetimePermalink) {
-      return res.status(500).json({ error: "Server not configured (missing env vars)" });
-    }
-
-    // --- Helper: call Gumroad API ---
-    async function gumroadGET(url) {
-      const r = await fetch(url, { method: "GET" });
-      const j = await r.json().catch(() => ({}));
-      return { ok: r.ok, status: r.status, json: j };
-    }
-
-    async function gumroadPOST(url, form) {
-      const body = new URLSearchParams(form);
-      const r = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body,
+    if (!accessToken) {
+      return res.status(500).json({
+        ok: false,
+        error:
+          "Missing GUMROAD_ACCESS_TOKEN in Vercel env. Add it then redeploy.",
       });
-      const j = await r.json().catch(() => ({}));
-      return { ok: r.ok, status: r.status, json: j };
     }
 
-    // --- 1) LIFETIME: verify license key (strongest) ---
-    async function verifyLifetime() {
-      const key = String(license_key || "").trim();
-      if (!key) return { lifetime: false };
+    const permalink =
+      cleanedPlan === "lifetime" ? lifetimePermalink : monthlyPermalink;
 
-      // Gumroad license verification endpoint (POST)
-      // We include email too (extra check).
-      const out = await gumroadPOST("https://api.gumroad.com/v2/licenses/verify", {
-        product_permalink: lifetimePermalink,
-        license_key: key,
-        email: cleanEmail,
+    if (!permalink) {
+      return res.status(500).json({
+        ok: false,
+        error:
+          cleanedPlan === "lifetime"
+            ? "Missing GUMROAD_LIFETIME_PERMALINK in Vercel env."
+            : "Missing GUMROAD_MONTHLY_PERMALINK in Vercel env.",
       });
-
-      // Expected: { success: true, purchase: {...} } when valid.
-      if (out.ok && out.json && out.json.success === true) {
-        return { lifetime: true };
-      }
-
-      return { lifetime: false };
     }
 
-    // --- 2) MONTHLY: verify active membership by checking Sales for that email ---
-    // This is “good enough to ship” without Gumroad redirect.
-    // If you later want stricter “active subscription” checks, we can upgrade it.
-    async function verifyMonthly() {
-      // Sales endpoint returns purchases; for memberships it should still record the transaction.
-      // We check if there is at least one sale for this product + email.
-      const url =
-        `https://api.gumroad.com/v2/sales` +
-        `?access_token=${encodeURIComponent(accessToken)}` +
-        `&product_permalink=${encodeURIComponent(monthlyPermalink)}` +
-        `&email=${encodeURIComponent(cleanEmail)}`;
+    // Gumroad Sales API — verifies whether this email bought the product
+    const url = new URL("https://api.gumroad.com/v2/sales");
+    url.searchParams.set("access_token", accessToken);
+    url.searchParams.set("product_permalink", permalink);
+    url.searchParams.set("email", cleanedEmail);
 
-      const out = await gumroadGET(url);
+    const r = await fetch(url.toString(), { method: "GET" });
+    const data = await r.json();
 
-      // Common response shape: { success: true, sales: [...] }
-      if (out.ok && out.json && out.json.success === true) {
-        const sales = Array.isArray(out.json.sales) ? out.json.sales : [];
-        if (sales.length > 0) {
-          return { monthlyActive: true };
-        }
-      }
-
-      return { monthlyActive: false };
+    if (!r.ok) {
+      return res.status(502).json({
+        ok: false,
+        error: "Gumroad API error",
+        status: r.status,
+        gumroad: data,
+      });
     }
 
-    let lifetime = false;
-    let monthlyActive = false;
-
-    if (plan === "lifetime") {
-      const r = await verifyLifetime();
-      lifetime = !!r.lifetime;
-    } else if (plan === "monthly") {
-      const r = await verifyMonthly();
-      monthlyActive = !!r.monthlyActive;
-    } else {
-      // Allow a "both" check if you want later, but keep strict now.
-      return res.status(400).json({ error: "plan must be 'monthly' or 'lifetime'" });
-    }
+    // Gumroad returns { success: true, sales: [...] }
+    const hasPurchase = Boolean(data?.success && Array.isArray(data?.sales) && data.sales.length > 0);
 
     return res.status(200).json({
       ok: true,
-      plan,
-      lifetime,
-      monthlyActive,
+      email: cleanedEmail,
+      plan: cleanedPlan,
+      access: hasPurchase,
+      // optional debug count (helps you confirm matching)
+      matchedSales: Array.isArray(data?.sales) ? data.sales.length : 0,
     });
-  } catch (err) {
-    return res.status(500).json({ error: err?.message || "Server error" });
+  } catch (e) {
+    return res.status(500).json({
+      ok: false,
+      error: "Server error",
+      message: e?.message || String(e),
+    });
   }
 }
