@@ -1,93 +1,65 @@
-// api/verify.js
+// /api/verify.js
+import crypto from "crypto";
+
+function sha256(input) {
+  return crypto.createHash("sha256").update(input).digest("hex");
+}
+
+async function kvGet(key) {
+  const url = process.env.KV_REST_API_URL;
+  const token = process.env.KV_REST_API_TOKEN;
+  if (!url || !token) return null;
+
+  const r = await fetch(`${url}/get/${encodeURIComponent(key)}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!r.ok) return null;
+  const data = await r.json();
+  return data?.result ?? null;
+}
+
 export default async function handler(req, res) {
-  // --- CORS (safe defaults) ---
+  // CORS + no-cache (important so it doesn't “stick”)
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Cache-Control", "no-store, max-age=0");
 
-  if (req.method === "OPTIONS") {
-    return res.status(204).end();
+  if (req.method === "OPTIONS") return res.status(204).end();
+
+  // ✅ This fixes your browser test: GET should work
+  if (req.method === "GET" && !req.query.email) {
+    return res.status(200).json({
+      ok: true,
+      message: "verify endpoint live (GET works)",
+    });
   }
 
-  // Allow BOTH GET (browser testing) and POST (app)
   if (req.method !== "GET" && req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  try {
-    // Read inputs from GET query or POST body
-    const email =
-      (req.method === "GET" ? req.query.email : req.body?.email) || "";
-    const plan =
-      (req.method === "GET" ? req.query.plan : req.body?.plan) || "monthly";
+  const email =
+    req.method === "GET"
+      ? (req.query.email || "").toString().trim().toLowerCase()
+      : (req.body?.email || "").toString().trim().toLowerCase();
 
-    const cleanedEmail = String(email).trim().toLowerCase();
-    const cleanedPlan = String(plan).trim().toLowerCase();
+  if (!email) return res.status(400).json({ error: "Missing email" });
 
-    if (!cleanedEmail) {
-      return res.status(400).json({ ok: false, error: "Missing email" });
-    }
+  const emailHash = sha256(email);
 
-    // ENV VARS (set these in Vercel Project Settings → Environment Variables)
-    const accessToken = process.env.GUMROAD_ACCESS_TOKEN;
-    const monthlyPermalink = process.env.GUMROAD_MONTHLY_PERMALINK;
-    const lifetimePermalink = process.env.GUMROAD_LIFETIME_PERMALINK;
+  // Keys written by Gumroad Ping webhook (Option C)
+  const lifetimeKey = `access:lifetime:${emailHash}`;
+  const monthlyKey = `access:monthly:${emailHash}`;
 
-    if (!accessToken) {
-      return res.status(500).json({
-        ok: false,
-        error:
-          "Missing GUMROAD_ACCESS_TOKEN in Vercel env. Add it then redeploy.",
-      });
-    }
+  const lifetime = await kvGet(lifetimeKey);
+  const monthly = await kvGet(monthlyKey);
 
-    const permalink =
-      cleanedPlan === "lifetime" ? lifetimePermalink : monthlyPermalink;
-
-    if (!permalink) {
-      return res.status(500).json({
-        ok: false,
-        error:
-          cleanedPlan === "lifetime"
-            ? "Missing GUMROAD_LIFETIME_PERMALINK in Vercel env."
-            : "Missing GUMROAD_MONTHLY_PERMALINK in Vercel env.",
-      });
-    }
-
-    // Gumroad Sales API — verifies whether this email bought the product
-    const url = new URL("https://api.gumroad.com/v2/sales");
-    url.searchParams.set("access_token", accessToken);
-    url.searchParams.set("product_permalink", permalink);
-    url.searchParams.set("email", cleanedEmail);
-
-    const r = await fetch(url.toString(), { method: "GET" });
-    const data = await r.json();
-
-    if (!r.ok) {
-      return res.status(502).json({
-        ok: false,
-        error: "Gumroad API error",
-        status: r.status,
-        gumroad: data,
-      });
-    }
-
-    // Gumroad returns { success: true, sales: [...] }
-    const hasPurchase = Boolean(data?.success && Array.isArray(data?.sales) && data.sales.length > 0);
-
-    return res.status(200).json({
-      ok: true,
-      email: cleanedEmail,
-      plan: cleanedPlan,
-      access: hasPurchase,
-      // optional debug count (helps you confirm matching)
-      matchedSales: Array.isArray(data?.sales) ? data.sales.length : 0,
-    });
-  } catch (e) {
-    return res.status(500).json({
-      ok: false,
-      error: "Server error",
-      message: e?.message || String(e),
-    });
-  }
+  return res.status(200).json({
+    ok: true,
+    emailHash,
+    access: Boolean(lifetime || monthly),
+    plan: lifetime ? "lifetime" : monthly ? "monthly" : null,
+  });
 }
