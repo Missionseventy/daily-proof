@@ -1,113 +1,199 @@
-/* ---- Daily Proof: Theme Pill + Dashboard polish ---- */
+/* css/styles.css */
+/* Daily Proof — Joro-like simplicity (warm paper, clean type, soft borders) */
 
-.brandMark { font-weight: 800; letter-spacing: .2px; }
-.brandMark .dot { margin-left: 2px; }
-
-.themePill{
-  display:flex;
-  gap:6px;
-  padding:6px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.04);
-  align-items:center;
-  user-select:none;
-}
-[data-theme="day"] .themePill{
-  border-color: rgba(0,0,0,.14);
-  background: rgba(0,0,0,.03);
-}
-.themePill button{
-  border:0;
-  padding:8px 12px;
-  border-radius:999px;
-  background: transparent;
-  color: inherit;
-  font-weight:700;
-  cursor:pointer;
-  opacity:.75;
-}
-.themePill button.active{
-  opacity:1;
-}
-.themePill button[data-theme="day"].active{
-  background: rgba(253,181,21,.18);
-  box-shadow: 0 0 0 1px rgba(253,181,21,.25) inset;
-}
-.themePill button[data-theme="night"].active{
-  background: rgba(0,0,0,.35);
-  box-shadow: 0 0 0 1px rgba(255,255,255,.12) inset;
+:root{
+  --bg: #F6F1E7;
+  --card: #FFFFFF;
+  --ink: #121212;
+  --muted: #6A6A6A;
+  --border: #E8DFD2;
+  --shadow: 0 10px 30px rgba(0,0,0,.06);
+  --accent: #C7A46B; /* warm “gold” dot */
+  --btn: #121212;
+  --btnText: #FFFFFF;
 }
 
-/* Panels */
-.panel{ display:none; margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,.12); }
-.panel.show{ display:block; }
-[data-theme="day"] .panel{ border-top-color: rgba(0,0,0,.12); }
+* { box-sizing: border-box; }
 
-/* Inputs */
-.input, .textarea{
-  width:100%;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.14);
-  background: transparent;
-  color: inherit;
-}
-[data-theme="day"] .input, [data-theme="day"] .textarea{
-  border-color: rgba(0,0,0,.14);
-}
-.textarea{ min-height:120px; padding:12px; }
-.input{ padding:12px; }
-
-.row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
-.divider{ height:1px; background: rgba(255,255,255,.12); margin:18px 0; }
-[data-theme="day"] .divider{ background: rgba(0,0,0,.12); }
-
-.todayTop{
-  display:flex;
-  gap:14px;
-  align-items:flex-start;
-  justify-content:space-between;
-  flex-wrap:wrap;
+html, body {
+  height: 100%;
 }
 
-.timerBox{ min-width: 220px; }
-.timer{ font-size: 32px; font-weight: 900; letter-spacing: 1px; }
-.timerBtns{ display:flex; gap:10px; margin-top:10px; }
-.sessionsList{ display:flex; flex-direction:column; gap:12px; margin-top:12px; }
-.sessionItem{ padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,.12); }
-[data-theme="day"] .sessionItem{ border-color: rgba(0,0,0,.12); }
-.sessionTop{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
-.sessionTime{ font-weight:800; }
-.sessionMinutes{ font-weight:800; opacity:.85; }
-.sessionFocus{ margin-top:6px; font-size: 13px; opacity:.8; font-weight:700; }
-.sessionText{ margin-top:8px; line-height:1.35; }
-
-.focusPills{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
-.focusPill{
-  border:1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.04);
-  color: inherit;
-  padding:8px 10px;
-  border-radius:999px;
-  cursor:pointer;
-  font-weight:800;
-}
-[data-theme="day"] .focusPill{
-  border-color: rgba(0,0,0,.14);
-  background: rgba(0,0,0,.03);
-}
-.focusPill.active{
-  border-color: rgba(253,181,21,.45);
-  box-shadow: 0 0 0 1px rgba(253,181,21,.22) inset;
+body.page {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background: var(--bg);
+  color: var(--ink);
 }
 
-/* Buttons (fallback if your CSS doesn’t fully style them) */
-.btn{ border-radius:12px; padding:10px 12px; font-weight:800; cursor:pointer; border:1px solid rgba(255,255,255,.14); background: transparent; color: inherit; }
-.btn.small{ padding:8px 10px; border-radius:999px; }
-.btn.primary{ background: rgba(253,181,21,.18); border-color: rgba(253,181,21,.35); }
-.btn.secondary{ background: rgba(255,255,255,.06); }
-.btn.ghost{ background: transparent; }
-.btn.danger{ border-color: rgba(255,80,80,.45); color: rgba(255,140,140,1); }
+a { color: inherit; text-decoration: none; }
+
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 18px 56px;
+}
+
+.topbar {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 18px 18px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.brand-name {
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.topnav {
+  display: flex;
+  gap: 14px;
+}
+
+.navlink {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.navlink:hover {
+  color: var(--ink);
+}
+
+.h1 {
+  margin: 18px 0 6px;
+  font-size: 42px;
+  line-height: 1.1;
+}
+
+.sub {
+  margin: 0 0 22px;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 860px) {
+  .pricing-grid { grid-template-columns: 1fr; }
+  .h1 { font-size: 36px; }
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(199,164,107,0.12);
+}
+
+.price {
+  margin-top: 12px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.amount {
+  font-size: 44px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.per {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.muted {
+  color: var(--muted);
+  margin: 10px 0 14px;
+}
+
+.list {
+  margin: 0 0 16px;
+  padding-left: 18px;
+  color: var(--ink);
+}
+
+.list li {
+  margin: 8px 0;
+  color: rgba(18,18,18,0.88);
+}
+
+.btn {
+  display: inline-flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 14px;
+  border-radius: 14px;
+  font-weight: 800;
+  border: 1px solid var(--border);
+  background: #FFFFFF;
+  color: var(--ink);
+}
+
+.btn:hover {
+  border-color: rgba(18,18,18,0.25);
+}
+
+.btn.primary {
+  background: var(--btn);
+  color: var(--btnText);
+  border-color: var(--btn);
+}
+
+.btn.primary:hover {
+  opacity: 0.92;
+}
+
+.fine {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.footer {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 18px 32px;
+  color: var(--muted);
+  text-align: center;
+}
+
 
 
 
