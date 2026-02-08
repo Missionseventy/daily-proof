@@ -1,84 +1,83 @@
-// /api/verify.js
-// Vercel Serverless Function
-// Verifies Gumroad license keys using Gumroad's public verify endpoint.
-
 export default async function handler(req, res) {
-  // Allow POST only (clean + avoids logging keys in URLs)
   if (req.method !== "POST") {
-    return res.status(405).json({ ok: false, message: "Method not allowed" });
+    return res.status(405).json({ ok: false, error: "Method not allowed" });
+  }
+
+  const token = process.env.GUMROAD_ACCESS_TOKEN;
+  if (!token) {
+    return res.status(500).json({ ok: false, error: "Missing GUMROAD_ACCESS_TOKEN" });
+  }
+
+  const { plan, email, license_key } = req.body || {};
+  const cleanEmail = String(email || "").trim().toLowerCase();
+
+  if (!plan || !cleanEmail) {
+    return res.status(400).json({ ok: false, error: "Missing plan or email" });
   }
 
   try {
-    const { license_key, plan } = req.body || {};
-    const key = String(license_key || "").trim();
+    if (plan === "monthly") {
+      const productPermalink = "citlrs";
+      const url =
+        `https://api.gumroad.com/v2/sales?access_token=${encodeURIComponent(token)}` +
+        `&product_permalink=${encodeURIComponent(productPermalink)}`;
 
-    if (!key) {
-      return res.status(400).json({ ok: false, message: "Missing license key" });
-    }
+      const r = await fetch(url);
+      const data = await r.json();
 
-    const monthlyId = process.env.GUMROAD_PRODUCT_ID_MONTHLY;
-    const lifetimeId = process.env.GUMROAD_PRODUCT_ID_LIFETIME;
+      if (!data?.success) {
+        return res.status(200).json({ ok: false, error: "Could not verify monthly purchase." });
+      }
 
-    // Decide which product_id to verify against
-    let productId = "";
-    if (plan === "lifetime") productId = lifetimeId;
-    else if (plan === "monthly") productId = monthlyId;
-    else productId = monthlyId || lifetimeId; // fallback if plan not passed
-
-    if (!productId) {
-      return res.status(500).json({
-        ok: false,
-        message: "Server missing product_id env vars",
+      const found = (data.sales || []).some(s => {
+        const saleEmail = String(s.email || "").trim().toLowerCase();
+        return saleEmail === cleanEmail && !s.refunded;
       });
+
+      if (!found) {
+        return res.status(200).json({ ok: false, error: "No active monthly purchase found for that email." });
+      }
+
+      return res.status(200).json({ ok: true });
     }
 
-    const body = new URLSearchParams();
-    body.append("product_id", productId);
-    body.append("license_key", key);
-    // IMPORTANT:
-    // We do NOT increment uses count (privacy-first, fewer false lockouts)
-    body.append("increment_uses_count", "false");
+    if (plan === "lifetime") {
+      const productPermalink = "nscnb";
+      const key = String(license_key || "").trim();
+      if (!key) return res.status(400).json({ ok: false, error: "Missing license key" });
 
-    const resp = await fetch("https://api.gumroad.com/v2/licenses/verify", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body,
-    });
-
-    const data = await resp.json().catch(() => ({}));
-
-    if (!resp.ok) {
-      return res.status(200).json({
-        ok: false,
-        message: data?.message || "Verification failed",
+      const verifyRes = await fetch("https://api.gumroad.com/v2/licenses/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          product_permalink: productPermalink,
+          license_key: key
+        })
       });
+
+      const verifyData = await verifyRes.json();
+
+      if (!verifyData?.success || !verifyData?.purchase) {
+        return res.status(200).json({ ok: false, error: "Invalid license key." });
+      }
+
+      const purchaseEmail = String(verifyData.purchase.email || "").trim().toLowerCase();
+      if (purchaseEmail && purchaseEmail !== cleanEmail) {
+        return res.status(200).json({ ok: false, error: "Email does not match the purchase email." });
+      }
+
+      if (verifyData.purchase.refunded) {
+        return res.status(200).json({ ok: false, error: "Purchase was refunded." });
+      }
+
+      return res.status(200).json({ ok: true });
     }
 
-    if (!data?.success) {
-      return res.status(200).json({
-        ok: false,
-        message: data?.message || "Invalid license key",
-      });
-    }
-
-    // If valid
-    return res.status(200).json({
-      ok: true,
-      plan: plan || "paid",
-      purchase: {
-        refunded: !!data?.purchase?.refunded,
-        chargebacked: !!data?.purchase?.chargebacked,
-        disputed: !!data?.purchase?.disputed,
-        test: !!data?.purchase?.test,
-        email: data?.purchase?.email || null,
-      },
-    });
+    return res.status(400).json({ ok: false, error: "Invalid plan" });
   } catch (e) {
-    return res.status(200).json({
-      ok: false,
-      message: "Server error verifying license",
-    });
+    return res.status(200).json({ ok: false, error: "Network error verifying purchase." });
   }
 }
+
 
 
