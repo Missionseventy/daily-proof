@@ -1,103 +1,83 @@
-// api/verify.js
-import crypto from "crypto";
-import { kv } from "@vercel/kv";
-
-function json(res, status, body) {
-  res.statusCode = status;
-  res.setHeader("Content-Type", "application/json; charset=utf-8");
-  res.setHeader("Cache-Control", "no-store");
-  res.end(JSON.stringify(body));
-}
-
-function getRawBody(req) {
-  return new Promise((resolve, reject) => {
-    let data = "";
-    req.on("data", (chunk) => (data += chunk));
-    req.on("end", () => resolve(data));
-    req.on("error", reject);
-  });
-}
-
-function safeCompare(a = "", b = "") {
-  const aa = Buffer.from(String(a));
-  const bb = Buffer.from(String(b));
-  if (aa.length !== bb.length) return false;
-  return crypto.timingSafeEqual(aa, bb);
-}
+// /api/verify.js
+// Vercel Serverless Function
+// Verifies Gumroad license keys using Gumroad's public verify endpoint.
 
 export default async function handler(req, res) {
-  // ✅ GET = simple test from browser
-  if (req.method === "GET") {
-    return json(res, 200, {
+  // Allow POST only (clean + avoids logging keys in URLs)
+  if (req.method !== "POST") {
+    return res.status(405).json({ ok: false, message: "Method not allowed" });
+  }
+
+  try {
+    const { license_key, plan } = req.body || {};
+    const key = String(license_key || "").trim();
+
+    if (!key) {
+      return res.status(400).json({ ok: false, message: "Missing license key" });
+    }
+
+    const monthlyId = process.env.GUMROAD_PRODUCT_ID_MONTHLY;
+    const lifetimeId = process.env.GUMROAD_PRODUCT_ID_LIFETIME;
+
+    // Decide which product_id to verify against
+    let productId = "";
+    if (plan === "lifetime") productId = lifetimeId;
+    else if (plan === "monthly") productId = monthlyId;
+    else productId = monthlyId || lifetimeId; // fallback if plan not passed
+
+    if (!productId) {
+      return res.status(500).json({
+        ok: false,
+        message: "Server missing product_id env vars",
+      });
+    }
+
+    const body = new URLSearchParams();
+    body.append("product_id", productId);
+    body.append("license_key", key);
+    // IMPORTANT:
+    // We do NOT increment uses count (privacy-first, fewer false lockouts)
+    body.append("increment_uses_count", "false");
+
+    const resp = await fetch("https://api.gumroad.com/v2/licenses/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body,
+    });
+
+    const data = await resp.json().catch(() => ({}));
+
+    if (!resp.ok) {
+      return res.status(200).json({
+        ok: false,
+        message: data?.message || "Verification failed",
+      });
+    }
+
+    if (!data?.success) {
+      return res.status(200).json({
+        ok: false,
+        message: data?.message || "Invalid license key",
+      });
+    }
+
+    // If valid
+    return res.status(200).json({
       ok: true,
-      message: "verify endpoint live (GET works)",
-      hasKV: !!process.env.KV_REST_API_URL && !!process.env.KV_REST_API_TOKEN,
-      hasSecret: !!process.env.WEBHOOK_SECRET,
+      plan: plan || "paid",
+      purchase: {
+        refunded: !!data?.purchase?.refunded,
+        chargebacked: !!data?.purchase?.chargebacked,
+        disputed: !!data?.purchase?.disputed,
+        test: !!data?.purchase?.test,
+        email: data?.purchase?.email || null,
+      },
+    });
+  } catch (e) {
+    return res.status(200).json({
+      ok: false,
+      message: "Server error verifying license",
     });
   }
-
-  // ✅ POST = Gumroad webhook (or manual curl)
-  if (req.method !== "POST") {
-    return json(res, 405, { ok: false, error: "Method not allowed" });
-  }
-
-  const secret = process.env.WEBHOOK_SECRET || "";
-  if (!secret) {
-    return json(res, 500, { ok: false, error: "Missing WEBHOOK_SECRET" });
-  }
-
-  // We support either header style:
-  // - x-webhook-secret: <secret> (simple)
-  // - x-signature: hmac_sha256(rawBody, secret) (stronger)
-  const headerSecret = req.headers["x-webhook-secret"];
-  const signature = req.headers["x-signature"];
-
-  const raw = await getRawBody(req);
-
-  // If x-signature is present, verify HMAC
-  if (signature) {
-    const expected = crypto
-      .createHmac("sha256", secret)
-      .update(raw)
-      .digest("hex");
-
-    if (!safeCompare(signature, expected)) {
-      return json(res, 401, { ok: false, error: "Invalid signature" });
-    }
-  } else {
-    // Otherwise fall back to simple shared-secret header
-    if (!safeCompare(headerSecret, secret)) {
-      return json(res, 401, { ok: false, error: "Invalid webhook secret" });
-    }
-  }
-
-  // Parse payload
-  let payload = {};
-  try {
-    payload = raw ? JSON.parse(raw) : {};
-  } catch (e) {
-    return json(res, 400, { ok: false, error: "Invalid JSON body" });
-  }
-
-  // Minimal data we store (privacy-first):
-  // store only purchase proof tokens / emails hash if you want later
-  const email = (payload.email || "").trim().toLowerCase();
-  const productId = payload.product_id || payload.product_permalink || "unknown";
-  const saleId = payload.sale_id || payload.order_id || crypto.randomUUID();
-
-  // You can decide what your "proof key" is.
-  // For now: allow "email + productId"
-  const key = email ? `proof:${productId}:${email}` : `proof:${productId}:${saleId}`;
-
-  // Store a tiny record
-  const record = {
-    ok: true,
-    productId,
-    saleId,
-    createdAt: new Date().toISOString(),
-  };
-
-  await kv.set(key, record);
-
-  return json(res, 200, { ok: true, stored: true, key });
 }
+
