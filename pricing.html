@@ -1,81 +1,179 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="night">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Daily Proof · Pricing</title>
-  <link rel="stylesheet" href="./css/styles.css" />
-</head>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily Proof — Pricing</title>
 
-<body>
-  <header class="topbar">
-    <div class="brand">Daily Proof <span class="dot">•</span></div>
+    <link rel="stylesheet" href="/css/styles.css" />
 
-    <nav class="nav">
-      <a class="nav-link" href="./index.html">Home</a>
-      <button id="themeBtn" class="themeBtn" type="button">Night</button>
-    </nav>
-  </header>
+    <style>
+      /* If your styles.css already covers this, you can delete this block.
+         I’m keeping it so the page looks decent even if styles.css is minimal. */
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background: #0b1220;
+        color: #e8eefc;
+        margin: 0;
+      }
+      .wrap {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 36px 18px 60px;
+      }
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 28px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        letter-spacing: 0.2px;
+      }
+      .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        background: #5b7cfa;
+        box-shadow: 0 0 16px rgba(91, 124, 250, 0.65);
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .muted {
+        color: rgba(232, 238, 252, 0.7);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+      @media (max-width: 860px) {
+        .grid { grid-template-columns: 1fr; }
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 10px 28px rgba(0,0,0,0.25);
+      }
+      .price {
+        font-size: 38px;
+        font-weight: 900;
+        margin: 8px 0 6px;
+      }
+      .badge {
+        display: inline-block;
+        font-size: 12px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: rgba(91, 124, 250, 0.18);
+        border: 1px solid rgba(91, 124, 250, 0.45);
+        color: #cfe0ff;
+      }
+      ul {
+        padding-left: 18px;
+        margin: 12px 0 18px;
+      }
+      li {
+        margin: 8px 0;
+        color: rgba(232, 238, 252, 0.85);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 14px 14px;
+        border-radius: 12px;
+        font-weight: 800;
+        background: #5b7cfa;
+        color: #0b1220;
+        border: none;
+        cursor: pointer;
+      }
+      .btn.secondary {
+        background: rgba(255,255,255,0.09);
+        color: #e8eefc;
+        border: 1px solid rgba(255,255,255,0.14);
+      }
+      .foot {
+        margin-top: 18px;
+        font-size: 13px;
+        color: rgba(232, 238, 252, 0.65);
+      }
+    </style>
+  </head>
 
-  <main class="container">
-    <section class="card">
-      <h2>Choose your path</h2>
-      <p class="muted">Payments are handled by Gumroad. Your work stays on your device.</p>
-    </section>
-
-    <section class="card">
-      <h2>$7 / month</h2>
-      <p class="muted">7-day trial on Gumroad. Cancel anytime.</p>
-
-      <a class="btnPrimary full"
-         href="https://missionseventy.gumroad.com/l/citlrs"
-         target="_blank" rel="noopener">
-        Continue to checkout
-      </a>
-    </section>
-
-    <section class="card">
-      <h2>Lifetime</h2>
-      <p class="muted">One-time payment. Own it forever.</p>
-
-      <a class="btnPrimary full"
-         href="https://missionseventy.gumroad.com/l/nscnb"
-         target="_blank" rel="noopener">
-        Continue to checkout
-      </a>
-    </section>
-
-    <section class="card">
-      <h2>Unlock access</h2>
-      <p class="muted">After purchase, enter the email used at checkout. For lifetime, add the license key if required.</p>
-
-      <label class="label">Email</label>
-      <input id="unlockEmail" class="input" placeholder="you@example.com" autocomplete="email" />
-
-      <label class="label">License key (lifetime)</label>
-      <input id="unlockKey" class="input" placeholder="optional for monthly" autocomplete="off" />
-
-      <div class="btnRow" style="margin-top:12px;">
-        <button id="unlockMonthlyBtn" class="btn" type="button">Unlock monthly</button>
-        <button id="unlockLifetimeBtn" class="btn" type="button">Unlock lifetime</button>
+  <body>
+    <div class="wrap">
+      <div class="top">
+        <div class="brand">
+          <span class="dot"></span>
+          <span>Daily Proof</span>
+        </div>
+        <a class="muted" href="/index.html">Home</a>
       </div>
 
-      <p id="unlockMsg" class="muted" style="margin-top:10px;"></p>
-      <p class="muted small">Your work lives on your device. Always.</p>
-    </section>
+      <h1 style="margin: 0 0 6px;">Pricing</h1>
+      <p class="muted" style="margin: 0 0 18px;">
+        Simple plans. Show daily proof of work. Build consistency.
+      </p>
 
-    <p class="muted center" style="margin-top:14px;">
-      Daily Proof <span class="dot">•</span>
-    </p>
-  </main>
+      <div class="grid">
+        <!-- MONTHLY -->
+        <div class="card">
+          <span class="badge">Monthly</span>
+          <div class="price">$7<span style="font-size: 14px; font-weight: 700;">/mo</span></div>
+          <p class="muted" style="margin-top: 0;">
+            Perfect to start. Cancel anytime.
+          </p>
+          <ul>
+            <li>Log your daily sessions</li>
+            <li>Track proof over time</li>
+            <li>Lightweight, fast, simple</li>
+          </ul>
 
-  <footer class="footer">
-    Daily Proof <span class="dot">•</span>
-  </footer>
+          <!-- IMPORTANT: this ID is what js/app.js uses -->
+          <a id="buy-monthly" class="btn" href="#">Get Monthly</a>
 
-  <script src="./js/unlock.js"></script>
-</body>
+          <div class="foot">Opens Gumroad checkout in a new tab.</div>
+        </div>
+
+        <!-- LIFETIME -->
+        <div class="card">
+          <span class="badge">Lifetime</span>
+          <div class="price">$49</div>
+          <p class="muted" style="margin-top: 0;">
+            Pay once. Keep it forever.
+          </p>
+          <ul>
+            <li>Everything in Monthly</li>
+            <li>No recurring payments</li>
+            <li>Support the project early</li>
+          </ul>
+
+          <!-- IMPORTANT: this ID is what js/app.js uses -->
+          <a id="buy-lifetime" class="btn secondary" href="#">Get Lifetime</a>
+
+          <div class="foot">Opens Gumroad checkout in a new tab.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IMPORTANT: this is what sets the button links -->
+    <script src="/js/app.js"></script>
+  </body>
 </html>
+
 
 
 
