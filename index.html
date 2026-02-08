@@ -1,63 +1,56 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="night">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Daily Proof</title>
   <link rel="stylesheet" href="./css/styles.css" />
 </head>
-
 <body>
   <header class="topbar">
     <div class="brand">Daily Proof <span class="dot">•</span></div>
-
     <nav class="nav">
-      <a class="nav-link start-link" href="./pricing.html">Start</a>
-      <button id="themeBtn" class="themeBtn" type="button">Night</button>
+      <a class="pill" href="./pricing.html">Pricing</a>
+      <a class="pill" href="./app.html">Start</a>
     </nav>
   </header>
 
-  <main class="container">
+  <main class="shell">
     <section class="hero">
       <h1>Proof that you showed up.</h1>
-      <p class="hero-sub">
-        One focus for the day. Multiple sessions. A record you can’t argue with.
-      </p>
-
-      <a class="cta" href="./pricing.html">Use it now</a>
-
-      <p class="muted">Your data lives on your device. Always.</p>
+      <p>One focus for the day. Multiple sessions. A record you can’t argue with.</p>
+      <div class="btnrow">
+        <a class="btn" href="./app.html">Use it now</a>
+        <a class="btn btn-ghost" href="./pricing.html">See pricing</a>
+      </div>
+      <p class="muted small">Your data lives on your device. Always.</p>
     </section>
 
-    <section class="card">
-      <h2>How it works</h2>
-      <ol class="steps">
+    <section class="card" style="margin-top:18px">
+      <div class="section-title">How it works</div>
+      <ol class="list">
         <li>Add your focuses for today (e.g., Daily Proof, Videos, Driving).</li>
         <li>Pick one focus and run a session with the timer.</li>
         <li>Save a short note. Sessions stack into a daily record.</li>
       </ol>
-      <p class="muted">No accounts. No tracking. No servers holding your work.</p>
+      <p class="muted" style="margin-top:12px">
+        No accounts. No tracking. No servers holding your work.
+      </p>
     </section>
 
-    <section class="card">
-      <h2>What it looks like</h2>
-      <img
-        src="./assets/app.png"
-        alt="Daily Proof screenshot"
-        class="app-preview"
-        loading="lazy"
-      />
-      <p class="muted">Simple on purpose.</p>
+    <section class="card" style="margin-top:18px">
+      <div class="section-title">What it looks like</div>
+      <p class="muted">Live preview updated soon.</p>
     </section>
   </main>
 
   <footer class="footer">
     Daily Proof <span class="dot">•</span>
   </footer>
-
-  <script src="./js/landing.js"></script>
 </body>
 </html>
+
+
 
 
 
