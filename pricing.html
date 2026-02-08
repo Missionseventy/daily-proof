@@ -1,178 +1,94 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Daily Proof — Pricing</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Daily Proof — Pricing</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
 
-    <link rel="stylesheet" href="/css/styles.css" />
-
-    <style>
-      /* If your styles.css already covers this, you can delete this block.
-         I’m keeping it so the page looks decent even if styles.css is minimal. */
-      body {
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-        background: #0b1220;
-        color: #e8eefc;
-        margin: 0;
-      }
-      .wrap {
-        max-width: 980px;
-        margin: 0 auto;
-        padding: 36px 18px 60px;
-      }
-      .top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 28px;
-      }
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-weight: 800;
-        letter-spacing: 0.2px;
-      }
-      .dot {
-        width: 12px;
-        height: 12px;
-        border-radius: 999px;
-        background: #5b7cfa;
-        box-shadow: 0 0 16px rgba(91, 124, 250, 0.65);
-      }
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-      .muted {
-        color: rgba(232, 238, 252, 0.7);
-      }
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
-      }
-      @media (max-width: 860px) {
-        .grid { grid-template-columns: 1fr; }
-      }
-      .card {
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.09);
-        border-radius: 16px;
-        padding: 18px;
-        box-shadow: 0 10px 28px rgba(0,0,0,0.25);
-      }
-      .price {
-        font-size: 38px;
-        font-weight: 900;
-        margin: 8px 0 6px;
-      }
-      .badge {
-        display: inline-block;
-        font-size: 12px;
-        padding: 5px 10px;
-        border-radius: 999px;
-        background: rgba(91, 124, 250, 0.18);
-        border: 1px solid rgba(91, 124, 250, 0.45);
-        color: #cfe0ff;
-      }
-      ul {
-        padding-left: 18px;
-        margin: 12px 0 18px;
-      }
-      li {
-        margin: 8px 0;
-        color: rgba(232, 238, 252, 0.85);
-      }
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        width: 100%;
-        padding: 14px 14px;
-        border-radius: 12px;
-        font-weight: 800;
-        background: #5b7cfa;
-        color: #0b1220;
-        border: none;
-        cursor: pointer;
-      }
-      .btn.secondary {
-        background: rgba(255,255,255,0.09);
-        color: #e8eefc;
-        border: 1px solid rgba(255,255,255,0.14);
-      }
-      .foot {
-        margin-top: 18px;
-        font-size: 13px;
-        color: rgba(232, 238, 252, 0.65);
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="wrap">
-      <div class="top">
-        <div class="brand">
-          <span class="dot"></span>
-          <span>Daily Proof</span>
-        </div>
-        <a class="muted" href="/index.html">Home</a>
-      </div>
-
-      <h1 style="margin: 0 0 6px;">Pricing</h1>
-      <p class="muted" style="margin: 0 0 18px;">
-        Simple plans. Show daily proof of work. Build consistency.
-      </p>
-
-      <div class="grid">
-        <!-- MONTHLY -->
-        <div class="card">
-          <span class="badge">Monthly</span>
-          <div class="price">$7<span style="font-size: 14px; font-weight: 700;">/mo</span></div>
-          <p class="muted" style="margin-top: 0;">
-            Perfect to start. Cancel anytime.
-          </p>
-          <ul>
-            <li>Log your daily sessions</li>
-            <li>Track proof over time</li>
-            <li>Lightweight, fast, simple</li>
-          </ul>
-
-          <!-- IMPORTANT: this ID is what js/app.js uses -->
-          <a id="buy-monthly" class="btn" href="#">Get Monthly</a>
-
-          <div class="foot">Opens Gumroad checkout in a new tab.</div>
-        </div>
-
-        <!-- LIFETIME -->
-        <div class="card">
-          <span class="badge">Lifetime</span>
-          <div class="price">$49</div>
-          <p class="muted" style="margin-top: 0;">
-            Pay once. Keep it forever.
-          </p>
-          <ul>
-            <li>Everything in Monthly</li>
-            <li>No recurring payments</li>
-            <li>Support the project early</li>
-          </ul>
-
-          <!-- IMPORTANT: this ID is what js/app.js uses -->
-          <a id="buy-lifetime" class="btn secondary" href="#">Get Lifetime</a>
-
-          <div class="foot">Opens Gumroad checkout in a new tab.</div>
-        </div>
-      </div>
+<body class="page">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-dot" aria-hidden="true"></span>
+      <a class="brand-name" href="/index.html">Daily Proof</a>
     </div>
 
-    <!-- IMPORTANT: this is what sets the button links -->
-    <script src="/js/app.js"></script>
-  </body>
+    <nav class="topnav">
+      <a class="navlink" href="/index.html">Home</a>
+      <a class="navlink" href="/app.html">Use it now</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1 class="h1">Pricing</h1>
+    <p class="sub">
+      Simple plans. Show daily proof of work. Build consistency.
+    </p>
+
+    <section class="pricing-grid">
+      <!-- MONTHLY -->
+      <article class="card">
+        <div class="pill">Monthly</div>
+        <div class="price">
+          <span class="amount">$7</span><span class="per">/mo</span>
+        </div>
+        <p class="muted">
+          Start free for 7 days. Then $7/month. Cancel anytime.
+        </p>
+
+        <ul class="list">
+          <li>Log daily sessions</li>
+          <li>Track proof over time</li>
+          <li>Keep momentum without overthinking</li>
+        </ul>
+
+        <!-- DIRECT LINK (no JS needed) -->
+        <a class="btn primary"
+           href="https://missionseventy.gumroad.com/l/citlrs"
+           target="_blank"
+           rel="noopener noreferrer">
+          Start 7-day free trial
+        </a>
+
+        <p class="fine">Opens Gumroad checkout in a new tab.</p>
+      </article>
+
+      <!-- LIFETIME -->
+      <article class="card">
+        <div class="pill">Lifetime</div>
+        <div class="price">
+          <span class="amount">$49</span>
+        </div>
+        <p class="muted">
+          Pay once. Keep it forever.
+        </p>
+
+        <ul class="list">
+          <li>Everything in Monthly</li>
+          <li>No recurring payments</li>
+          <li>Support the project early</li>
+        </ul>
+
+        <!-- DIRECT LINK (no JS needed) -->
+        <a class="btn"
+           href="https://missionseventy.gumroad.com/l/nscnb"
+           target="_blank"
+           rel="noopener noreferrer">
+          Get Lifetime
+        </a>
+
+        <p class="fine">Opens Gumroad checkout in a new tab.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Daily Proof •</span>
+  </footer>
+</body>
 </html>
+
 
 
 
