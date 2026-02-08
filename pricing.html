@@ -1,93 +1,67 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Daily Proof — Pricing</title>
-  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="./css/styles.css" />
 </head>
-
-<body class="page">
+<body>
   <header class="topbar">
-    <div class="brand">
-      <span class="brand-dot" aria-hidden="true"></span>
-      <a class="brand-name" href="/index.html">Daily Proof</a>
-    </div>
-
-    <nav class="topnav">
-      <a class="navlink" href="/index.html">Home</a>
-      <a class="navlink" href="/app.html">Use it now</a>
+    <div class="brand">Daily Proof <span class="dot">•</span></div>
+    <nav class="nav">
+      <a class="pill" href="./index.html">Home</a>
+      <a class="pill" href="./app.html">Start</a>
     </nav>
   </header>
 
-  <main class="container">
-    <h1 class="h1">Pricing</h1>
-    <p class="sub">
-      Simple plans. Show daily proof of work. Build consistency.
-    </p>
+  <main class="shell">
+    <section class="hero">
+      <h1>Pricing</h1>
+      <p>Simple plans. Show daily proof of work. Build consistency.</p>
+    </section>
 
-    <section class="pricing-grid">
-      <!-- MONTHLY -->
-      <article class="card">
-        <div class="pill">Monthly</div>
-        <div class="price">
-          <span class="amount">$7</span><span class="per">/mo</span>
-        </div>
-        <p class="muted">
-          Start free for 7 days. Then $7/month. Cancel anytime.
+    <section class="grid" style="margin-top:18px">
+      <div class="card">
+        <div class="muted small">Monthly</div>
+        <div style="font-size:44px;font-weight:700;margin-top:6px">$7<span class="muted" style="font-size:18px">/mo</span></div>
+        <p class="muted" style="margin-top:8px">
+          <strong>7-day free trial</strong>, then $7/month. Cancel anytime.
         </p>
-
         <ul class="list">
-          <li>Log daily sessions</li>
+          <li>Log your daily sessions</li>
           <li>Track proof over time</li>
-          <li>Keep momentum without overthinking</li>
+          <li>Lightweight, fast, simple</li>
         </ul>
-
-        <!-- DIRECT LINK (no JS needed) -->
-        <a class="btn primary"
-           href="https://missionseventy.gumroad.com/l/citlrs"
-           target="_blank"
-           rel="noopener noreferrer">
-          Start 7-day free trial
-        </a>
-
-        <p class="fine">Opens Gumroad checkout in a new tab.</p>
-      </article>
-
-      <!-- LIFETIME -->
-      <article class="card">
-        <div class="pill">Lifetime</div>
-        <div class="price">
-          <span class="amount">$49</span>
+        <div class="btnrow">
+          <a class="btn" target="_blank" rel="noopener" href="https://missionseventy.gumroad.com/l/citlrs">Get Monthly</a>
+          <a class="btn btn-ghost" href="./app.html">I already paid</a>
         </div>
-        <p class="muted">
-          Pay once. Keep it forever.
-        </p>
+        <p class="muted small" style="margin-top:10px">Opens Gumroad checkout in a new tab.</p>
+      </div>
 
+      <div class="card">
+        <div class="muted small">Lifetime</div>
+        <div style="font-size:44px;font-weight:700;margin-top:6px">$49</div>
+        <p class="muted" style="margin-top:8px">Pay once. Keep it forever.</p>
         <ul class="list">
           <li>Everything in Monthly</li>
           <li>No recurring payments</li>
           <li>Support the project early</li>
         </ul>
-
-        <!-- DIRECT LINK (no JS needed) -->
-        <a class="btn"
-           href="https://missionseventy.gumroad.com/l/nscnb"
-           target="_blank"
-           rel="noopener noreferrer">
-          Get Lifetime
-        </a>
-
-        <p class="fine">Opens Gumroad checkout in a new tab.</p>
-      </article>
+        <div class="btnrow">
+          <a class="btn" target="_blank" rel="noopener" href="https://missionseventy.gumroad.com/l/nscnb">Get Lifetime</a>
+          <a class="btn btn-ghost" href="./app.html">I already paid</a>
+        </div>
+        <p class="muted small" style="margin-top:10px">Opens Gumroad checkout in a new tab.</p>
+      </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <span>Daily Proof •</span>
-  </footer>
+  <footer class="footer">Daily Proof <span class="dot">•</span></footer>
 </body>
 </html>
+
 
 
 
