@@ -1,394 +1,114 @@
-/* =========================
-   THEME TOKENS
-========================= */
-:root{
-  --bg:#0b0b0b;
-  --card:#121212;
-  --text:#f5f5f5;
-  --muted:#a0a0a0;
-  --line:#222;
-  --accent:#d6b56c;
+/* ---- Daily Proof: Theme Pill + Dashboard polish ---- */
 
-  --shadow: 0 18px 50px rgba(0,0,0,.18);
-  --radius: 18px;
-  --radiusSm: 14px;
-}
+.brandMark { font-weight: 800; letter-spacing: .2px; }
+.brandMark .dot { margin-left: 2px; }
 
-[data-theme="day"]{
-  --bg:#f4efe6;
-  --card:#ffffff;
-  --text:#0b0b0b;
-  --muted:#666;
-  --line:#ddd;
-  --accent:#c9a24f;
-
-  --shadow: 0 14px 40px rgba(0,0,0,.08);
-}
-
-/* =========================
-   BASE
-========================= */
-*{ box-sizing:border-box; }
-
-html, body{
-  margin:0;
-  padding:0;
-  font-family: system-ui,-apple-system,BlinkMacSystemFont;
-  background:var(--bg);
-  color:var(--text);
-}
-
-a{ color:inherit; text-decoration:none; }
-
-/* =========================
-   TOP BAR
-========================= */
-.topbar{
+.themePill{
   display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:14px 18px;
-  border-bottom:1px solid var(--line);
-  position:sticky;
-  top:0;
-  background:var(--bg);
-  z-index:10;
-}
-
-.brand{
-  font-weight:700;
-  font-size:16px;
-}
-
-.dot{ color:var(--accent); }
-
-.nav{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.nav-link{
-  padding:6px 12px;
+  gap:6px;
+  padding:6px;
   border-radius:999px;
-  border:1px solid var(--line);
-  font-weight:600;
-  opacity:.9;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.04);
+  align-items:center;
+  user-select:none;
 }
-
-.themeBtn{
-  padding:6px 14px;
-  border-radius:999px;
-  border:1px solid var(--accent);
-  background:transparent;
-  color:var(--text);
-  font-weight:700;
-  cursor:pointer;
+[data-theme="day"] .themePill{
+  border-color: rgba(0,0,0,.14);
+  background: rgba(0,0,0,.03);
 }
-
-.btnGhost{
+.themePill button{
+  border:0;
   padding:8px 12px;
-  border-radius:12px;
-  border:1px solid var(--line);
-  background:transparent;
-  color:var(--text);
-  font-weight:700;
-  cursor:pointer;
-}
-
-/* =========================
-   CONTAINER
-========================= */
-.container{
-  max-width:760px;
-  margin:0 auto;
-  padding:20px 16px 56px;
-}
-
-.card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  padding:18px;
-  box-shadow:var(--shadow);
-  margin-top:18px;
-}
-
-.footer{
-  text-align:center;
-  padding:26px 12px;
-  color:var(--muted);
-}
-
-/* =========================
-   LANDING (kept)
-========================= */
-.hero{
-  padding:32px 4px;
-}
-
-.hero h1{
-  font-size:36px;
-  line-height:1.15;
-  margin:0 0 12px;
-}
-
-.hero-sub{
-  font-size:16px;
-  max-width:520px;
-  margin:0;
-}
-
-.cta{
-  display:inline-block;
-  margin-top:18px;
-  padding:12px 18px;
-  border-radius:14px;
-  border:1px solid var(--accent);
-  font-weight:800;
-}
-
-.steps{ padding-left:18px; }
-.steps li{ margin-bottom:8px; }
-
-.muted{
-  color:var(--muted);
-  font-size:14px;
-  margin-top:8px;
-}
-
-.app-preview{
-  width:100%;
-  max-width:720px;
-  margin:12px auto 0;
-  display:block;
-  border-radius:16px;
-  border:1px solid var(--line);
-  box-shadow:var(--shadow);
-}
-
-/* =========================
-   APP UI (RESTORED)
-========================= */
-.appWrap{ padding-top:14px; }
-
-.appCard{ margin-top:0; }
-
-.rowBetween{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
-
-.smallRow{ margin-top:6px; }
-
-.h2{
-  margin:0;
-  font-size:24px;
-  letter-spacing:.2px;
-}
-
-.h3{
-  margin:0;
-  font-size:18px;
-}
-
-.trialText{
-  color:var(--muted);
-  font-size:13px;
-  text-align:right;
-}
-
-.timer{
-  font-size:46px;
-  font-weight:900;
-  letter-spacing:1px;
-  margin:10px 0 10px;
-}
-
-.btnRow{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:10px;
-}
-
-.btn, .btnPrimary, .btnDanger{
-  padding:10px 14px;
-  border-radius:14px;
-  border:1px solid var(--line);
-  background:transparent;
-  color:var(--text);
-  font-weight:800;
-  cursor:pointer;
-}
-
-.btnPrimary{
-  border:1px solid var(--accent);
-  background:rgba(214,181,108,.14);
-}
-
-.btnDanger{
-  border:1px solid #b65a5a;
-  background:rgba(182,90,90,.12);
-}
-
-.btnLink{
-  border:none;
-  background:transparent;
-  color:var(--muted);
-  font-weight:800;
-  cursor:pointer;
-  padding:6px 8px;
-}
-
-.helper{
-  margin:10px 0 0;
-  color:var(--muted);
-  font-size:14px;
-}
-
-.hr{
-  border:none;
-  border-top:1px solid var(--line);
-  margin:14px 0;
-}
-
-.pillWrap{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:10px;
-}
-
-.focusPill{
-  padding:10px 14px;
   border-radius:999px;
-  border:1px solid var(--line);
-  background:transparent;
-  color:var(--text);
-  font-weight:800;
-  cursor:pointer;
-}
-
-.focusPill.active{
-  border:1px solid var(--accent);
-  background:rgba(214,181,108,.14);
-}
-
-.panel{
-  display:none;
-  margin-top:12px;
-}
-
-.panel.show{ display:block; }
-
-.label{
-  display:block;
-  margin-top:8px;
-  margin-bottom:6px;
-  color:var(--muted);
-  font-size:13px;
+  background: transparent;
+  color: inherit;
   font-weight:700;
+  cursor:pointer;
+  opacity:.75;
+}
+.themePill button.active{
+  opacity:1;
+}
+.themePill button[data-theme="day"].active{
+  background: rgba(253,181,21,.18);
+  box-shadow: 0 0 0 1px rgba(253,181,21,.25) inset;
+}
+.themePill button[data-theme="night"].active{
+  background: rgba(0,0,0,.35);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.12) inset;
 }
 
+/* Panels */
+.panel{ display:none; margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,.12); }
+.panel.show{ display:block; }
+[data-theme="day"] .panel{ border-top-color: rgba(0,0,0,.12); }
+
+/* Inputs */
 .input, .textarea{
   width:100%;
-  padding:12px 12px;
-  border-radius:14px;
-  border:1px solid var(--line);
-  background:transparent;
-  color:var(--text);
-  font-weight:600;
-  outline:none;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.14);
+  background: transparent;
+  color: inherit;
 }
-
-.textarea{
-  min-height:130px;
-  resize:vertical;
+[data-theme="day"] .input, [data-theme="day"] .textarea{
+  border-color: rgba(0,0,0,.14);
 }
+.textarea{ min-height:120px; padding:12px; }
+.input{ padding:12px; }
 
-.privacyLine{
-  margin-top:12px;
-  color:var(--muted);
-  font-size:14px;
-  font-weight:600;
-}
+.row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px; }
+.divider{ height:1px; background: rgba(255,255,255,.12); margin:18px 0; }
+[data-theme="day"] .divider{ background: rgba(0,0,0,.12); }
 
-/* Bottom sheets (collapsible panels) */
-.sheet{
-  display:none;
-  margin-top:16px;
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  padding:16px;
-  box-shadow:var(--shadow);
-}
-
-.sheet.show{ display:block; }
-
-.sheetTop{
+.todayTop{
   display:flex;
+  gap:14px;
+  align-items:flex-start;
   justify-content:space-between;
-  align-items:center;
-  margin-bottom:10px;
+  flex-wrap:wrap;
 }
 
-.sheetTitle{
-  font-weight:900;
-  font-size:18px;
-}
+.timerBox{ min-width: 220px; }
+.timer{ font-size: 32px; font-weight: 900; letter-spacing: 1px; }
+.timerBtns{ display:flex; gap:10px; margin-top:10px; }
+.sessionsList{ display:flex; flex-direction:column; gap:12px; margin-top:12px; }
+.sessionItem{ padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,.12); }
+[data-theme="day"] .sessionItem{ border-color: rgba(0,0,0,.12); }
+.sessionTop{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
+.sessionTime{ font-weight:800; }
+.sessionMinutes{ font-weight:800; opacity:.85; }
+.sessionFocus{ margin-top:6px; font-size: 13px; opacity:.8; font-weight:700; }
+.sessionText{ margin-top:8px; line-height:1.35; }
 
-.sessionsList{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  margin-top:10px;
-}
-
-.sessionItem{
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:12px;
-}
-
-.sessionTop{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:6px;
-}
-
-.sessionTime{
-  color:var(--muted);
+.focusPills{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.focusPill{
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.04);
+  color: inherit;
+  padding:8px 10px;
+  border-radius:999px;
+  cursor:pointer;
   font-weight:800;
-  font-size:13px;
+}
+[data-theme="day"] .focusPill{
+  border-color: rgba(0,0,0,.14);
+  background: rgba(0,0,0,.03);
+}
+.focusPill.active{
+  border-color: rgba(253,181,21,.45);
+  box-shadow: 0 0 0 1px rgba(253,181,21,.22) inset;
 }
 
-.sessionMinutes{
-  font-weight:900;
-}
+/* Buttons (fallback if your CSS doesn’t fully style them) */
+.btn{ border-radius:12px; padding:10px 12px; font-weight:800; cursor:pointer; border:1px solid rgba(255,255,255,.14); background: transparent; color: inherit; }
+.btn.small{ padding:8px 10px; border-radius:999px; }
+.btn.primary{ background: rgba(253,181,21,.18); border-color: rgba(253,181,21,.35); }
+.btn.secondary{ background: rgba(255,255,255,.06); }
+.btn.ghost{ background: transparent; }
+.btn.danger{ border-color: rgba(255,80,80,.45); color: rgba(255,140,140,1); }
 
-.sessionFocus{
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:6px;
-}
-
-.sessionText{
-  font-weight:600;
-  line-height:1.4;
-}
-
-/* =========================
-   MOBILE TIGHTENING
-========================= */
-@media (max-width: 420px){
-  .timer{ font-size:40px; }
-  .card{ padding:16px; }
-}
 
 
 
