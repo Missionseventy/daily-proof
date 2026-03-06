@@ -1,66 +1,149 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="night">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Daily Proof — Pricing</title>
-  <link rel="stylesheet" href="./css/styles.css" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Daily Proof · Pricing</title>
+  <meta name="description" content="Simple pricing for Daily Proof. $7/mo or $49 lifetime. 7-day free trial. No card required."/>
+  <link rel="stylesheet" href="./css/styles.css"/>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">Daily Proof <span class="dot">•</span></div>
-    <nav class="nav">
-      <a class="pill" href="./index.html">Home</a>
-      <a class="pill" href="./app.html">Start</a>
-    </nav>
-  </header>
 
-  <main class="shell">
-    <section class="hero">
-      <h1>Pricing</h1>
-      <p>Simple plans. Show daily proof of work. Build consistency.</p>
-    </section>
+<header class="topbar animate">
+  <a class="brand" href="./index.html">Daily Proof<span class="dot"> ·</span></a>
+  <nav class="nav">
+    <a class="linklike" href="./index.html">Home</a>
+    <button class="modePill" id="themeBtn" type="button">Night</button>
+    <a class="btn primary" href="./app.html">Open app →</a>
+  </nav>
+</header>
 
-    <section class="grid" style="margin-top:18px">
-      <div class="card">
-        <div class="muted small">Monthly</div>
-        <div style="font-size:44px;font-weight:700;margin-top:6px">$7<span class="muted" style="font-size:18px">/mo</span></div>
-        <p class="muted" style="margin-top:8px">
-          <strong>7-day free trial</strong>, then $7/month. Cancel anytime.
-        </p>
-        <ul class="list">
-          <li>Log your daily sessions</li>
-          <li>Track proof over time</li>
-          <li>Lightweight, fast, simple</li>
-        </ul>
-        <div class="btnrow">
-          <a class="btn" target="_blank" rel="noopener" href="https://missionseventy.gumroad.com/l/citlrs">Get Monthly</a>
-          <a class="btn btn-ghost" href="./app.html">I already paid</a>
-        </div>
-        <p class="muted small" style="margin-top:10px">Opens Gumroad checkout in a new tab.</p>
-      </div>
+<div class="container-sm">
 
-      <div class="card">
-        <div class="muted small">Lifetime</div>
-        <div style="font-size:44px;font-weight:700;margin-top:6px">$49</div>
-        <p class="muted" style="margin-top:8px">Pay once. Keep it forever.</p>
-        <ul class="list">
-          <li>Everything in Monthly</li>
-          <li>No recurring payments</li>
-          <li>Support the project early</li>
-        </ul>
-        <div class="btnrow">
-          <a class="btn" target="_blank" rel="noopener" href="https://missionseventy.gumroad.com/l/nscnb">Get Lifetime</a>
-          <a class="btn btn-ghost" href="./app.html">I already paid</a>
-        </div>
-        <p class="muted small" style="margin-top:10px">Opens Gumroad checkout in a new tab.</p>
-      </div>
-    </section>
-  </main>
+  <!-- HEADER -->
+  <div style="text-align:center; margin-bottom:52px;" class="animate">
+    <div class="eyebrow" style="justify-content:center; margin-bottom:18px;">Pricing</div>
+    <h1 style="font-family:var(--serif); font-weight:300; font-style:italic; font-size:clamp(36px,7vw,64px); letter-spacing:-1.5px; line-height:1.05; margin-bottom:16px;">
+      Simple. Fair. <strong style="font-style:normal; font-weight:700; color:var(--gold-light);">Yours.</strong>
+    </h1>
+    <p class="muted" style="font-size:14px; line-height:1.8; max-width:400px; margin:0 auto;">
+      No subscriptions to forget. No data on servers. A tool that works — and keeps working, even offline.
+    </p>
+  </div>
 
-  <footer class="footer">Daily Proof <span class="dot">•</span></footer>
+  <!-- PRICING CARDS -->
+  <div class="pricing-grid animate d1">
+
+    <!-- TRIAL -->
+    <div class="pricing-card">
+      <div class="plan-label">Trial</div>
+      <div class="price-num">Free</div>
+      <div class="price-per">7 days · no card ever</div>
+      <p class="plan-note">Full access. No commitment. Try it and keep it if it earns its place in your day.</p>
+      <ul class="plan-features">
+        <li>Unlimited focuses</li>
+        <li>Timer + session log</li>
+        <li>JSON export</li>
+        <li>Day &amp; night mode</li>
+      </ul>
+      <a class="btn" href="./app.html" id="trialBtn"
+         style="text-align:center; text-decoration:none; margin-top:auto; padding:12px;">
+        Start free trial
+      </a>
+    </div>
+
+    <!-- MONTHLY -->
+    <div class="pricing-card featured">
+      <div class="plan-label">Monthly</div>
+      <div class="price-num">$7<span class="price-per">/mo</span></div>
+      <div class="price-per">cancel anytime</div>
+      <p class="plan-note">Keep saving sessions after the trial. Every feature, forever, month to month.</p>
+      <ul class="plan-features">
+        <li>Everything in trial</li>
+        <li>Unlimited sessions</li>
+        <li>Future features included</li>
+        <li>Cancel anytime</li>
+      </ul>
+      <a class="btn primary"
+         href="https://missionseventy.gumroad.com/l/citlrs"
+         target="_blank" rel="noopener"
+         style="text-align:center; text-decoration:none; margin-top:auto; padding:12px;">
+        Get monthly →
+      </a>
+    </div>
+
+    <!-- LIFETIME -->
+    <div class="pricing-card">
+      <div class="plan-label">Lifetime</div>
+      <div class="price-num">$49</div>
+      <div class="price-per">one payment · yours forever</div>
+      <p class="plan-note">Pay once. Use it forever. All future updates included — no recurring cost, ever.</p>
+      <ul class="plan-features">
+        <li>Everything in monthly</li>
+        <li>All future updates</li>
+        <li>Best value long-term</li>
+        <li>Support indie development</li>
+      </ul>
+      <a class="btn"
+         href="https://missionseventy.gumroad.com/l/nscnb"
+         target="_blank" rel="noopener"
+         style="text-align:center; text-decoration:none; margin-top:auto; padding:12px;">
+        Get lifetime →
+      </a>
+    </div>
+
+  </div>
+
+  <!-- FAQ SECTION -->
+  <div class="section-divide animate d2"><span>Questions</span></div>
+
+  <div style="display:flex; flex-direction:column; gap:1px; background:var(--border); border:1px solid var(--border); border-radius:var(--r-lg); overflow:hidden;" class="animate d3">
+
+    <div style="background:var(--card); padding:24px 28px;">
+      <p style="font-family:var(--serif); font-size:17px; font-weight:600; margin-bottom:8px;">Where is my data stored?</p>
+      <p class="muted" style="font-size:13px; line-height:1.75;">Entirely on your device using your browser's localStorage. Nothing is sent to any server. Ever. Not even anonymously.</p>
+    </div>
+
+    <div style="background:var(--card); padding:24px 28px;">
+      <p style="font-family:var(--serif); font-size:17px; font-weight:600; margin-bottom:8px;">What happens when my trial ends?</p>
+      <p class="muted" style="font-size:13px; line-height:1.75;">You'll see a prompt to upgrade. Your existing session data stays on your device — nothing is deleted. You just can't save new sessions until you upgrade.</p>
+    </div>
+
+    <div style="background:var(--card); padding:24px 28px;">
+      <p style="font-family:var(--serif); font-size:17px; font-weight:600; margin-bottom:8px;">How does payment work?</p>
+      <p class="muted" style="font-size:13px; line-height:1.75;">Payments are processed securely via Gumroad. After purchase, you'll receive a confirmation and your access is unlocked immediately.</p>
+    </div>
+
+    <div style="background:var(--card); padding:24px 28px;">
+      <p style="font-family:var(--serif); font-size:17px; font-weight:600; margin-bottom:8px;">Can I export my data?</p>
+      <p class="muted" style="font-size:13px; line-height:1.75;">Yes — hit Export in the app at any time to download a JSON file of all your sessions and focuses. Your data is always yours.</p>
+    </div>
+
+  </div>
+
+  <p class="muted text-center mt-lg animate d4" style="padding-bottom:8px;">
+    No accounts. No tracking. No servers holding your work.
+  </p>
+
+</div>
+
+<footer class="footer">
+  <div class="brand" style="font-size:18px;">Daily Proof<span class="dot"> ·</span></div>
+  <span class="muted">© 2026 · Your data, your device.</span>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="./js/pricing.js"></script>
+<script>
+  document.getElementById("trialBtn")?.addEventListener("click", () => {
+    if (!localStorage.getItem("dp_trial_start"))
+      localStorage.setItem("dp_trial_start", new Date().toISOString());
+  });
+</script>
 </body>
 </html>
+
 
 
 
