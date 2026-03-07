@@ -4,198 +4,149 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Daily Proof · Prove you showed up.</title>
-  <meta name="description" content="One focus. A timer. A short note. Sessions stack into a daily record you can't argue with. No accounts. No tracking. Data stays on your device."/>
-  <meta property="og:title" content="Daily Proof · Prove you showed up."/>
-  <meta property="og:description" content="Local-first productivity. One focus, a timer, a daily record. No accounts ever."/>
+  <meta name="description" content="One focus. A timer. An honest note. A daily record you can't argue with. No accounts. No tracking. Local-first."/>
+  <meta property="og:title" content="Daily Proof"/>
+  <meta property="og:description" content="Prove you showed up. Local-first productivity — no accounts, no tracking."/>
   <meta property="og:url" content="https://daily-proof-nine.vercel.app"/>
   <link rel="stylesheet" href="./css/styles.css"/>
 </head>
 <body>
 
-<header class="topbar animate">
-  <div class="brand">Daily Proof<span class="dot"> ·</span></div>
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="brand">Daily Proof<span class="brand-dot">.</span></div>
   <nav class="nav">
-    <a class="linklike" href="./pricing.html">Pricing</a>
-    <button class="modePill" id="themeBtn" type="button">Night</button>
-    <a class="btn primary" href="./app.html">Open app →</a>
+    <a class="btn btn-ghost btn-sm" href="./pricing.html">Pricing</a>
+    <button class="theme-pill" id="themeBtn" type="button">Night</button>
+    <a class="btn btn-cta btn-sm" href="./app.html" data-trial>Start free</a>
   </nav>
 </header>
 
-<!-- HERO SPLIT -->
-<div class="hero-split">
-  <div class="hero-left">
-    <div class="eyebrow animate d1">A tool for serious days</div>
-    <h1 class="hero-headline animate d2">
-      Proof that<br>you <strong>showed up.</strong>
+<!-- HERO -->
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-kicker fade d1">
+      <span class="hero-kicker-dot"></span>
+      Local-first · No accounts · No tracking
+    </div>
+
+    <h1 class="hero-h fade d2">
+      Prove you<br>showed up.
     </h1>
-    <p class="hero-sub animate d3">
-      One focus. A running timer. One honest paragraph.
+
+    <p class="hero-p fade d3">
+      One focus. A timer. One honest paragraph.
       Sessions stack into a daily record you can't argue with.
     </p>
-    <div class="hero-cta animate d4">
-      <a class="btn cta" href="./app.html" id="trialBtn" style="font-size:12px; padding:13px 30px;">
+
+    <div class="hero-cta fade d4">
+      <a class="btn btn-cta" href="./app.html" data-trial style="font-size:14px; padding:11px 24px;">
         Start free — 7 days
       </a>
-      <a class="btn" href="./pricing.html">See pricing</a>
-    </div>
-    <div class="trust-line animate d5">
-      <span class="trust-dot"></span>
-      No account required &nbsp;·&nbsp; No card &nbsp;·&nbsp; Your data stays on your device
-    </div>
-  </div>
-
-  <div class="hero-right">
-    <div class="eyebrow animate d2" style="margin-bottom:28px;">How it works</div>
-    <div class="steps-grid animate d3">
-      <div class="step">
-        <div class="step-num">01</div>
-        <h3>Set your focus</h3>
-        <p class="muted">Name what matters today. Switch freely between projects and sessions.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <h3>Run a session</h3>
-        <p class="muted">Hit start. Do the work. Hit stop. The timer keeps honest time.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">03</div>
-        <h3>Write the proof</h3>
-        <p class="muted">One paragraph. What did you do? Sessions stack. Days compound.</p>
-      </div>
+      <a class="btn" href="./pricing.html">See pricing →</a>
     </div>
 
-    <div class="manifesto animate d4">
-      <p>"Most people overestimate what they can do in a day — and underestimate what they can do consistently."</p>
-      <cite>Daily Proof helps with the second part.</cite>
+    <div class="hero-note fade d4">
+      No card required &nbsp;·&nbsp; Data stays on your device &nbsp;·&nbsp; Forever
     </div>
   </div>
 </div>
 
-<!-- MARQUEE -->
-<div class="marquee-strip">
-  <div class="marquee-inner">
-    <span class="marquee-item">No accounts required</span>
-    <span class="marquee-item">Data stays on your device</span>
-    <span class="marquee-item">No cloud. No tracking.</span>
-    <span class="marquee-item">7-day free trial</span>
-    <span class="marquee-item">Local-first</span>
-    <span class="marquee-item">One focus per session</span>
-    <span class="marquee-item">$7/mo or $49 lifetime</span>
-    <span class="marquee-item">No accounts required</span>
-    <span class="marquee-item">Data stays on your device</span>
-    <span class="marquee-item">No cloud. No tracking.</span>
-    <span class="marquee-item">7-day free trial</span>
-    <span class="marquee-item">Local-first</span>
-    <span class="marquee-item">One focus per session</span>
-    <span class="marquee-item">$7/mo or $49 lifetime</span>
+<!-- HOW IT WORKS -->
+<div class="wrap">
+  <div class="steps">
+    <p class="label" style="margin-bottom:32px;">How it works</p>
+    <div class="steps-list">
+      <div class="step-item">
+        <div class="step-n">01</div>
+        <div class="step-h">Set your focus</div>
+        <p class="footer-note" style="font-size:13px; line-height:1.7;">Name what matters today. One active focus at a time. Switch freely.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-n">02</div>
+        <div class="step-h">Run a session</div>
+        <p class="footer-note" style="font-size:13px; line-height:1.7;">Start the timer. Do the work. Stop when done. Honest time only.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-n">03</div>
+        <div class="step-h">Write the proof</div>
+        <p class="footer-note" style="font-size:13px; line-height:1.7;">One paragraph. What did you do? Sessions stack. Days compound.</p>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- PRICING SECTION -->
-<div style="position:relative; z-index:1; background: var(--bg);">
-  <div class="container">
-    <div class="section-divide"><span>Pricing</span></div>
+<!-- PRICING -->
+<div class="wrap">
+  <div class="pricing-wrap">
+    <p class="label" style="margin-bottom:8px;">Pricing</p>
+    <p style="font-family:var(--display); font-weight:700; font-size:clamp(24px,4vw,36px); letter-spacing:-.8px; margin-bottom:4px;">Simple. No surprises.</p>
+    <p class="footer-note" style="font-size:13px;">Try it free. Keep it if it earns its place.</p>
 
-    <div style="max-width:520px; margin-bottom:36px;">
-      <h2 style="font-family:var(--serif); font-size:clamp(28px,5vw,42px); font-weight:600; letter-spacing:-.5px; margin-bottom:10px;">
-        Simple. Fair. Yours.
-      </h2>
-      <p class="muted" style="font-size:13px; line-height:1.75;">
-        No subscriptions to forget. No data on servers. Just a tool that works — and keeps working, even offline.
-      </p>
-    </div>
+    <div class="pricing-table">
 
-    <div class="pricing-grid">
-
-      <!-- TRIAL -->
-      <div class="pricing-card">
-        <div class="plan-label">Trial</div>
-        <div class="price-num">Free</div>
-        <div class="price-per">7 days · no card</div>
-        <p class="plan-note">Full access from day one. Try it, keep it if it earns its place.</p>
-        <ul class="plan-features">
-          <li>Unlimited focuses</li>
-          <li>Timer + session log</li>
-          <li>JSON export</li>
-          <li>Day + night mode</li>
-        </ul>
-        <a class="btn" href="./app.html" id="trialBtn2" style="text-align:center; margin-top:4px;">Start free trial</a>
+      <div class="plan">
+        <div class="plan-name">Trial</div>
+        <div class="plan-price">Free</div>
+        <div class="plan-period">7 days · no card</div>
+        <div class="plan-desc">Full access. Try it first.</div>
+        <a class="btn" href="./app.html" data-trial
+           style="text-align:center; margin-top:8px;">
+          Start free trial
+        </a>
       </div>
 
-      <!-- MONTHLY -->
-      <div class="pricing-card featured">
-        <div class="plan-label">Monthly</div>
-        <div class="price-num">$7<span class="price-per">/mo</span></div>
-        <div class="price-per">cancel anytime</div>
-        <p class="plan-note">Keep saving sessions beyond the trial. All features, always.</p>
-        <ul class="plan-features">
-          <li>Everything in trial</li>
-          <li>Unlimited sessions forever</li>
-          <li>Future features included</li>
-          <li>Cancel anytime</li>
-        </ul>
-        <a class="btn primary"
-           href="https://missionseventy.gumroad.com/l/citlrs"
-           target="_blank" rel="noopener"
-           style="text-align:center; margin-top:4px;">
+      <div class="plan best">
+        <div class="plan-name">Monthly</div>
+        <div class="plan-price">$7<span style="font-size:18px; font-weight:400; color:var(--muted);">/mo</span></div>
+        <div class="plan-period">Cancel anytime</div>
+        <div class="plan-desc">Keep saving sessions. All features included.</div>
+        <button class="btn btn-primary" style="margin-top:8px;"
+          onclick="openGumroad('https://missionseventy.gumroad.com/l/citlrs','monthly')">
           Get monthly →
-        </a>
+        </button>
       </div>
 
-      <!-- LIFETIME -->
-      <div class="pricing-card">
-        <div class="plan-label">Lifetime</div>
-        <div class="price-num">$49</div>
-        <div class="price-per">one payment · yours forever</div>
-        <p class="plan-note">Pay once. Use forever. All future updates included — no recurring cost.</p>
-        <ul class="plan-features">
-          <li>Everything in monthly</li>
-          <li>All future updates</li>
-          <li>Best value long-term</li>
-          <li>Support indie development</li>
-        </ul>
-        <a class="btn"
-           href="https://missionseventy.gumroad.com/l/nscnb"
-           target="_blank" rel="noopener"
-           style="text-align:center; margin-top:4px;">
+      <div class="plan">
+        <div class="plan-name">Lifetime</div>
+        <div class="plan-price">$49</div>
+        <div class="plan-period">One payment · forever</div>
+        <div class="plan-desc">Own it. All future updates included.</div>
+        <button class="btn" style="margin-top:8px;"
+          onclick="openGumroad('https://missionseventy.gumroad.com/l/nscnb','lifetime')">
           Get lifetime →
-        </a>
+        </button>
       </div>
 
     </div>
-
-    <p class="muted text-center mt-lg">
-      No accounts. No tracking. No servers holding your work. Ever.
+    <p class="footer-note" style="margin-top:20px; font-size:12px;">
+      No accounts. No tracking. No servers holding your work. Your data lives on your device — always.
     </p>
   </div>
 </div>
 
-<footer class="footer">
-  <div class="brand" style="font-size:18px;">Daily Proof<span class="dot"> ·</span></div>
-  <span class="muted">© 2026 · Your data, your device.</span>
+<!-- FOOTER -->
+<footer class="footer wrap">
+  <div class="brand" style="font-size:15px;">Daily Proof<span class="brand-dot">.</span></div>
+  <span class="footer-note">© 2026 · Your data, your device.</span>
 </footer>
 
 <!-- EXIT-INTENT MODAL -->
-<div class="modal-overlay" id="exitModal">
+<div class="overlay" id="exitModal">
   <div class="modal">
-    <div class="modal-eyebrow">Before you go</div>
-    <h2 class="modal-title">Don't lose your streak.</h2>
-    <p class="modal-body">
-      Daily Proof keeps a full record of every session — locally, privately, on your device. No account needed. Try it free for 7 days, no card required.
-    </p>
+    <div class="modal-title">Don't break the chain.</div>
+    <p class="modal-sub">7 days free. No card. Your data stays on your device. Start now and keep your streak going.</p>
     <div class="modal-actions">
-      <a class="btn cta" href="./app.html"
-         style="text-align:center; text-decoration:none; padding:14px; font-size:12px; letter-spacing:.6px;">
-        Start free trial — 7 days
+      <a class="btn btn-cta" href="./app.html" data-trial
+         style="text-align:center; padding:13px; font-size:14px; text-decoration:none;">
+        Start free — 7 days
       </a>
-      <a class="btn primary"
-         href="https://missionseventy.gumroad.com/l/nscnb"
-         target="_blank" rel="noopener"
-         style="text-align:center; text-decoration:none; padding:14px; font-size:12px;">
-        Get lifetime access — $49
-      </a>
+      <button class="btn btn-primary" style="padding:13px; font-size:13px;"
+        onclick="openGumroad('https://missionseventy.gumroad.com/l/nscnb','lifetime')">
+        Get lifetime — $49
+      </button>
     </div>
-    <button class="modal-dismiss" id="dismissModal">Not today</button>
+    <button class="modal-skip" id="exitDismiss">Not now</button>
   </div>
 </div>
 
@@ -203,45 +154,31 @@
 
 <script src="./js/landing.js"></script>
 <script>
-  // Trial start
-  ["trialBtn","trialBtn2"].forEach(id => {
-    document.getElementById(id)?.addEventListener("click", () => {
-      if (!localStorage.getItem("dp_trial_start"))
-        localStorage.setItem("dp_trial_start", new Date().toISOString());
-    });
-  });
+  // Exit intent
+  const exitModal = document.getElementById("exitModal");
+  let shown = !!(localStorage.getItem("dp_trial_start") || localStorage.getItem("dp_paid"));
 
-  // Exit-intent
-  const modal  = document.getElementById("exitModal");
-  const toast  = document.getElementById("toast");
-  let shown    = !!(localStorage.getItem("dp_trial_start") || localStorage.getItem("dp_paid"));
-
-  function showModal() {
+  function maybeShowExit() {
     if (shown) return;
     shown = true;
-    modal.classList.add("visible");
+    exitModal.classList.add("show");
   }
 
-  function showToast(msg, type = "") {
-    toast.textContent = msg;
-    toast.className = "toast show" + (type ? " " + type : "");
-    setTimeout(() => toast.className = "toast", 2800);
-  }
-
-  document.addEventListener("mouseleave", e => { if (e.clientY < 20) showModal(); });
+  document.addEventListener("mouseleave", e => { if (e.clientY < 20) maybeShowExit(); });
 
   let lastY = 0;
   window.addEventListener("scroll", () => {
     const y = window.scrollY;
-    if ((lastY - y) > 70 && y < 120) showModal();
+    if ((lastY - y) > 70 && y < 120) maybeShowExit();
     lastY = y;
   }, { passive: true });
 
-  document.getElementById("dismissModal").addEventListener("click", () => modal.classList.remove("visible"));
-  modal.addEventListener("click", e => { if (e.target === modal) modal.classList.remove("visible"); });
+  document.getElementById("exitDismiss").addEventListener("click", () => exitModal.classList.remove("show"));
+  exitModal.addEventListener("click", e => { if (e.target === exitModal) exitModal.classList.remove("show"); });
 </script>
 </body>
 </html>
+
 
 
 
