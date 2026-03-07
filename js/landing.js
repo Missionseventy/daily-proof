@@ -1,90 +1,113 @@
-// Daily Proof — landing.js (FULL)
-// Works on index.html + pricing.html
-// - Theme toggle
-// - Gumroad overlay: remember selected plan
-// - After successful Gumroad checkout (overlay "sale" event), unlock + open app
+// Daily Proof · shared.js (used by landing + pricing pages)
+// Theme is consistent across all pages via this single file
 
 const THEME_KEY = "dp_theme";
-const PAID_KEY = "dp_paid";
-const PENDING_PLAN_KEY = "dp_pending_plan";
 
-// ---------------- Theme ----------------
-function setTheme(theme) {
-  document.documentElement.dataset.theme = theme;
-  localStorage.setItem(THEME_KEY, theme);
-
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  localStorage.setItem(THEME_KEY, t);
   const btn = document.getElementById("themeBtn");
-  if (btn) btn.textContent = theme === "day" ? "Day" : "Night";
+  if (btn) btn.textContent = t === "day" ? "Day" : "Night";
 }
 
-function initTheme() {
-  const saved = localStorage.getItem(THEME_KEY) || "night";
-  setTheme(saved);
-
-  const btn = document.getElementById("themeBtn");
-  btn?.addEventListener("click", () => {
-    const cur = localStorage.getItem(THEME_KEY) || "night";
-    setTheme(cur === "day" ? "night" : "day");
-  });
+function toggleTheme() {
+  const cur = localStorage.getItem(THEME_KEY) || "night";
+  setTheme(cur === "day" ? "night" : "day");
 }
 
-// ---------------- Gumroad Overlay ----------------
-function initGumroadButtons() {
-  // Only exists on pricing page
-  const buttons = document.querySelectorAll(".gumroadBtn[data-plan]");
-  if (!buttons.length) return;
+// Init on page load
+document.addEventListener("DOMContentLoaded", () => {
+  // Apply saved theme immediately
+  setTheme(localStorage.getItem(THEME_KEY) || "night");
 
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const plan = btn.getAttribute("data-plan");
-      if (plan === "monthly" || plan === "lifetime") {
-        localStorage.setItem(PENDING_PLAN_KEY, plan);
+  // Wire theme button — works on any page
+  document.getElementById("themeBtn")?.addEventListener("click", toggleTheme);
+
+  // Trial start button(s)
+  document.querySelectorAll("[data-trial]").forEach(el => {
+    el.addEventListener("click", () => {
+      if (!localStorage.getItem("dp_trial_start")) {
+        localStorage.setItem("dp_trial_start", new Date().toISOString());
       }
     });
   });
-}
-
-function parseMessageData(data) {
-  // Gumroad sometimes posts stringified JSON
-  if (typeof data === "string") {
-    try { return JSON.parse(data); } catch { return null; }
-  }
-  if (typeof data === "object" && data !== null) return data;
-  return null;
-}
-
-function initGumroadSaleListener() {
-  window.addEventListener("message", (event) => {
-    // Security: only accept messages from gumroad domains
-    const origin = (event.origin || "").toLowerCase();
-    if (!origin.includes("gumroad.com")) return;
-
-    const payload = parseMessageData(event.data);
-    if (!payload) return;
-
-    // Gumroad overlay purchase event usually posts: { post_message_name: "sale", ... }
-    if (payload.post_message_name !== "sale") return;
-
-    // Determine which plan they intended to buy
-    const plan = localStorage.getItem(PENDING_PLAN_KEY);
-
-    // If for some reason it's missing, default to monthly (safe)
-    const finalPlan = (plan === "lifetime" || plan === "monthly") ? plan : "monthly";
-
-    // Unlock
-    localStorage.setItem(PAID_KEY, finalPlan);
-
-    // Cleanup
-    localStorage.removeItem(PENDING_PLAN_KEY);
-
-    // Send them into the app
-    window.location.href = "./app.html";
-  });
-}
-
-// ---------------- Boot ----------------
-document.addEventListener("DOMContentLoaded", () => {
-  initTheme();
-  initGumroadButtons();
-  initGumroadSaleListener();
 });
+
+// ── Gumroad popup helper (used on landing + pricing) ──────────────
+// Opens Gumroad in a small popup window instead of new tab.
+// Shows a "completing purchase" overlay while window is open.
+// When popup closes, checks localStorage for paid status.
+
+function openGumroad(url, plan) {
+  const w = 520, h = 680;
+  const left = Math.round(window.screenX + (window.outerWidth - w) / 2);
+  const top  = Math.round(window.screenY + (window.outerHeight - h) / 2);
+
+  const popup = window.open(
+    url,
+    "gumroad_checkout",
+    `width=${w},height=${h},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes,resizable=yes`
+  );
+
+  if (!popup) {
+    // Fallback: blocked popups — open in same tab
+    window.location.href = url;
+    return;
+  }
+
+  // Show "waiting for purchase" overlay
+  showPurchaseOverlay(plan, popup);
+}
+
+function showPurchaseOverlay(plan, popup) {
+  // Create overlay if it doesn't exist
+  let overlay = document.getElementById("purchaseOverlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "purchaseOverlay";
+    overlay.className = "purchase-overlay";
+    overlay.innerHTML = `
+      <div class="purchase-spinner"></div>
+      <div class="purchase-title">Completing your purchase</div>
+      <div class="purchase-sub">Gumroad is open in a small window.<br>Complete your purchase there — we'll activate your access automatically.</div>
+      <button class="btn btn-ghost" id="purchaseCancel" style="margin-top:8px; font-size:12px; color:var(--muted);">Cancel</button>
+    `;
+    document.body.appendChild(overlay);
+    document.getElementById("purchaseCancel")?.addEventListener("click", () => {
+      overlay.classList.remove("show");
+      if (popup && !popup.closed) popup.close();
+      clearInterval(pollTimer);
+    });
+  }
+  overlay.classList.add("show");
+
+  // Poll every second: did user complete purchase?
+  let pollTimer = setInterval(() => {
+    // Check if popup was closed
+    if (popup.closed) {
+      clearInterval(pollTimer);
+      overlay.classList.remove("show");
+
+      // Check if paid was set (via ?paid= param handled in app.html)
+      // For landing/pricing: just redirect to app with confirmation
+      const paid = localStorage.getItem("dp_paid");
+      if (paid) {
+        showSuccess();
+      }
+      // else: they just closed without buying — that's fine
+    }
+  }, 1000);
+}
+
+function showSuccess() {
+  let overlay = document.getElementById("purchaseOverlay");
+  if (overlay) {
+    overlay.innerHTML = `
+      <div style="font-size:40px; margin-bottom:16px;">✓</div>
+      <div class="purchase-title" style="color:var(--green);">Access activated!</div>
+      <div class="purchase-sub">Welcome to Daily Proof. Taking you to the app…</div>
+    `;
+    overlay.style.background = "var(--bg)";
+    setTimeout(() => { window.location.href = "./app.html"; }, 1800);
+  }
+}
