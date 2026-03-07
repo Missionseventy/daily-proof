@@ -3,153 +3,154 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Daily Proof · App</title>
+  <title>Daily Proof</title>
   <link rel="stylesheet" href="./css/styles.css"/>
 </head>
 <body>
 
-<header class="topbar animate">
+<!-- TOPBAR -->
+<header class="topbar">
   <a class="brand" href="./index.html" style="text-decoration:none; color:inherit;">
-    Daily Proof<span class="dot"> ·</span>
+    Daily Proof<span class="brand-dot">.</span>
   </a>
   <nav class="nav">
-    <span id="trialBadge" class="badge trial" style="display:none;"></span>
-    <button class="modePill" id="themeBtn" type="button">Night</button>
-    <button class="linklike" id="exportBtn" type="button">Export</button>
+    <span id="badge" style="display:none;"></span>
+    <button class="theme-pill" id="themeBtn" type="button">Night</button>
+    <button class="btn btn-ghost btn-sm" id="exportBtn" type="button">Export</button>
   </nav>
 </header>
 
-<main class="container app-grid">
+<!-- APP LAYOUT -->
+<div class="app-grid">
 
-  <!-- ══ DAILY CARD ══ -->
-  <section class="card animate d1">
+  <!-- LEFT: MAIN -->
+  <div class="app-left">
 
-    <!-- Top row: date + stat -->
-    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+    <!-- Date + stat row -->
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:32px;">
       <div>
-        <div class="serif-sm" style="margin-bottom:4px;">Today</div>
-        <div class="muted" id="todayStr" style="font-size:11px; letter-spacing:.3px;"></div>
+        <div class="label" style="margin-bottom:4px;">Today</div>
+        <div style="font-size:13px; color:var(--text2);" id="dateEl"></div>
       </div>
-      <div class="stat-block">
-        <div class="stat-num" id="savedMins">0</div>
-        <div class="stat-label">min today</div>
+      <div class="stat">
+        <div class="stat-n" id="totalMins">0</div>
+        <div class="stat-l">min today</div>
       </div>
     </div>
-
-    <div class="divider"></div>
 
     <!-- TIMER -->
-    <div class="eyebrow" style="margin-bottom:0;">Session timer</div>
-    <div class="timer-display" id="timerEl">00:00:00</div>
+    <div class="timer" id="timerEl">00:00:00</div>
 
-    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-      <button class="btn primary" id="startBtn" type="button">Start</button>
-      <button class="btn ghost" id="resetBtn" type="button">Reset</button>
-      <span class="muted" style="font-size:11px; letter-spacing:.3px;">Start when you begin · stop when done</span>
+    <div class="row" style="margin-bottom:32px;">
+      <button class="btn btn-primary" id="startBtn" type="button">Start</button>
+      <button class="btn btn-ghost" id="resetBtn" type="button">Reset</button>
     </div>
 
-    <div class="divider"></div>
+    <div class="line"></div>
 
     <!-- FOCUS -->
-    <div class="section-row" style="margin-bottom:4px;">
-      <div class="eyebrow">Focus</div>
-      <button class="linklike" id="toggleFocusBtn" type="button">+ edit</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+      <span class="label">Focus</span>
+      <button class="btn btn-ghost btn-sm" id="focusToggle" type="button">+ Add</button>
     </div>
 
-    <p class="muted" id="focusHint" style="margin-top:6px; font-size:12px;">No focus yet — add one below.</p>
-    <div class="focus-pills" id="focusPills"></div>
+    <div class="pills" id="pillsEl"></div>
+    <p id="focusHint" style="font-size:13px; color:var(--muted); margin-top:4px; display:none;">No focus yet.</p>
 
-    <!-- Focus editor (collapsible) -->
-    <div id="focusEditor" class="collapse" style="margin-top:14px;">
-      <input class="input" id="focusInput" placeholder="e.g. Deep work, Content, Admin, Writing…"/>
+    <div id="focusEditor" class="collapse" style="margin-top:12px;">
+      <input class="input" id="focusInput" placeholder="Deep work, Writing, Admin…"/>
       <div class="row">
-        <button class="btn primary" id="addFocusBtn" type="button">+ Add focus</button>
-        <button class="btn ghost" id="clearFocusBtn" type="button">Clear all</button>
+        <button class="btn btn-primary btn-sm" id="addFocusBtn" type="button">Add</button>
+        <button class="btn btn-ghost btn-sm" id="clearFocusBtn" type="button">Clear all</button>
       </div>
     </div>
 
-    <div class="divider"></div>
+    <div class="line"></div>
 
-    <!-- ACTION BAR -->
-    <div class="action-bar">
-      <button class="btn primary" id="openProofBtn" type="button">+ Add proof</button>
-      <button class="btn" id="openSessionsBtn" type="button">Sessions</button>
+    <!-- ACTIONS -->
+    <div class="row" style="margin-bottom:16px;">
+      <button class="btn btn-primary" id="openProofBtn" type="button">+ Add proof</button>
+      <button class="btn" id="openSessionsBtn" type="button" style="display:none;">Sessions</button>
     </div>
 
-    <!-- PROOF PANEL (collapsible) -->
+    <!-- PROOF PANEL -->
     <div id="proofPanel" class="collapse">
-      <div class="divider"></div>
-      <div class="eyebrow" style="margin-bottom:14px;">Write your proof</div>
-      <span class="label">What did you do in this session?</span>
-      <textarea id="entryText" class="textarea" rows="6"
-        placeholder="One honest paragraph. What actually happened in this session?"></textarea>
-      <div class="row">
-        <button class="btn primary" id="saveSessionBtn" type="button">Save session</button>
-        <button class="btn danger" id="deleteLastBtn" type="button">Delete last</button>
-        <button class="btn ghost" id="closeProofBtn" type="button">✕ Close</button>
+      <div class="line"></div>
+      <div class="label" style="margin-bottom:12px;">Write your proof</div>
+      <textarea id="proofText" class="textarea" rows="6"
+        placeholder="One honest paragraph. What did you actually do?"></textarea>
+      <div class="row" style="margin-top:12px;">
+        <button class="btn btn-primary" id="saveBtn" type="button">Save session</button>
+        <button class="btn btn-danger btn-sm" id="deleteBtn" type="button">Delete last</button>
+        <button class="btn btn-ghost btn-sm" id="closeProofBtn" type="button">✕</button>
       </div>
     </div>
 
-    <p class="muted mt-md" style="font-size:11px; letter-spacing:.3px;">
+    <p style="font-size:11px; color:var(--muted); margin-top:28px; letter-spacing:.2px;">
       Your data lives on your device. Always.
     </p>
 
-  </section>
+  </div>
 
-  <!-- ══ SESSIONS CARD ══ -->
-  <section class="card animate d2" id="sessions-panel">
-    <div class="sessions-card-header">
+  <!-- RIGHT: SESSIONS -->
+  <div class="app-right" id="sessions-col">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
       <div>
-        <div class="eyebrow" style="margin-bottom:4px;">Sessions</div>
-        <p class="muted" style="font-size:11px;">Today's record.</p>
+        <div class="label" style="margin-bottom:2px;">Sessions</div>
+        <div style="font-size:12px; color:var(--muted);">Today's record</div>
       </div>
-      <button class="btn ghost sm" id="close-sessions-btn" type="button">✕</button>
+      <button class="btn btn-ghost btn-sm" id="close-sessions" type="button">✕</button>
     </div>
-    <div id="sessionsList" class="sessions-list"></div>
-    <p id="sessionsEmpty" class="muted text-center" style="padding:28px 0; font-size:12px; line-height:1.8;">
-      No sessions yet.<br/>Start the timer and add proof.
+    <div id="sessionsEl" class="sessions"></div>
+    <p id="sessionsEmpty" style="font-size:13px; color:var(--muted); padding:20px 0; line-height:1.7;">
+      No sessions yet.<br>Start the timer, then add proof.
     </p>
-  </section>
+  </div>
 
-</main>
+</div>
 
+<!-- FOOTER -->
 <footer class="footer">
-  <div class="brand" style="font-size:17px;">Daily Proof<span class="dot"> ·</span></div>
-  <span class="muted" style="font-size:11px; letter-spacing:.3px;">Your data lives on your device. Always.</span>
+  <div class="brand" style="font-size:15px;">Daily Proof<span class="brand-dot">.</span></div>
+  <span class="footer-note">Your data lives on your device. Always.</span>
 </footer>
 
-<!-- ══ PAYWALL MODAL ══ -->
-<div class="modal-overlay" id="exitModal">
+<!-- PAYWALL MODAL -->
+<div class="overlay" id="paywallModal">
   <div class="modal">
-    <div class="modal-eyebrow">Trial ended</div>
-    <h2 class="modal-title">Keep your streak alive.</h2>
-    <p class="modal-body">
-      You've proven you can show up. Don't lose that momentum — upgrade to keep saving sessions. Monthly at $7, or own it forever for $49.
-    </p>
+    <div class="modal-title">Keep the streak going.</div>
+    <p class="modal-sub">Your trial has ended. Upgrade to keep saving sessions. Monthly at $7, or own it forever for $49 — paid once via Gumroad, activated instantly.</p>
     <div class="modal-actions">
-      <a class="btn cta"
-         href="https://missionseventy.gumroad.com/l/nscnb"
-         target="_blank" rel="noopener"
-         style="text-align:center; text-decoration:none; padding:15px; font-size:12px; letter-spacing:.6px;">
-        Get lifetime access — $49
-      </a>
-      <a class="btn primary"
-         href="https://missionseventy.gumroad.com/l/citlrs"
-         target="_blank" rel="noopener"
-         style="text-align:center; text-decoration:none; padding:15px; font-size:12px;">
-        Monthly plan — $7/mo →
-      </a>
+      <button class="btn btn-cta" style="padding:14px; font-size:14px;"
+        onclick="openGumroadApp('https://missionseventy.gumroad.com/l/nscnb','lifetime')">
+        Get lifetime — $49
+      </button>
+      <button class="btn btn-primary" style="padding:14px; font-size:13px;"
+        onclick="openGumroadApp('https://missionseventy.gumroad.com/l/citlrs','monthly')">
+        Monthly — $7/mo →
+      </button>
     </div>
-    <button class="modal-dismiss" id="dismissModal">Not now</button>
+    <button class="modal-skip" id="paywallSkip">Not now</button>
   </div>
+</div>
+
+<!-- PURCHASE WAITING OVERLAY -->
+<div class="purchase-overlay" id="purchaseWait">
+  <div class="purchase-spinner"></div>
+  <div class="purchase-title" id="purchaseTitle">Completing your purchase</div>
+  <div class="purchase-sub" id="purchaseSub">
+    Gumroad is open in a small window.<br>
+    Complete your purchase there — we'll activate your access automatically.
+  </div>
+  <button class="btn btn-ghost" id="purchaseCancel" style="margin-top:12px; font-size:12px;">Cancel</button>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════
-// DAILY PROOF · App logic (self-contained)
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
+// DAILY PROOF · App (self-contained)
+// ═══════════════════════════════════════════════════
 
 const THEME_KEY    = "dp_theme";
 const TRIAL_KEY    = "dp_trial_start";
@@ -157,52 +158,56 @@ const PAID_KEY     = "dp_paid";
 const SESSIONS_KEY = "dp_sessions";
 const ACTIVE_KEY   = "dp_active_focus";
 
-function isoDate(d = new Date()) {
+function isoToday() {
+  const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 }
-const TODAY = isoDate();
+const TODAY = isoToday();
 const FOCUSES_KEY = `dp_focuses_${TODAY}`;
 
-// ── Helpers ──
+const $     = id => document.getElementById(id);
 const loadJ = (k, fb) => { try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(fb)); } catch { return fb; } };
 const saveJ = (k, v) => localStorage.setItem(k, JSON.stringify(v));
-const $     = id => document.getElementById(id);
 
+// ── Toast ──────────────────────────────
 function toast(msg, type = "") {
   const el = $("toast");
   el.textContent = msg;
   el.className = "toast show" + (type ? " " + type : "");
-  setTimeout(() => el.className = "toast", 2800);
+  setTimeout(() => el.className = "toast", 2600);
 }
 
-// ── Access ──
+// ── Access ─────────────────────────────
 const isPaid      = () => !!localStorage.getItem(PAID_KEY);
 const trialDays   = () => { const s = localStorage.getItem(TRIAL_KEY); return s ? Math.floor((Date.now() - new Date(s)) / 864e5) : null; };
 const trialActive = () => { const d = trialDays(); return d !== null && d < 7; };
 const hasAccess   = () => isPaid() || trialActive();
 
-// Check for Gumroad redirect: ?paid=monthly or ?paid=lifetime
-(function checkPaidParam() {
-  const params = new URLSearchParams(window.location.search);
-  const paid = params.get("paid");
-  if (paid === "monthly" || paid === "lifetime") {
-    localStorage.setItem(PAID_KEY, paid);
-    // Clean URL
+// ── Check ?paid= redirect from Gumroad ─
+(function() {
+  const p = new URLSearchParams(window.location.search).get("paid");
+  if (p === "monthly" || p === "lifetime") {
+    localStorage.setItem(PAID_KEY, p);
     window.history.replaceState({}, "", window.location.pathname);
-    toast("Payment confirmed. Welcome to Daily Proof ✓", "success");
+    // Show success screen briefly
+    const wait = $("purchaseWait");
+    $("purchaseTitle").textContent = "Access activated!";
+    $("purchaseSub").innerHTML = "Welcome to Daily Proof. You're all set. ✓";
+    $("purchaseCancel").style.display = "none";
+    wait.classList.add("show");
+    setTimeout(() => wait.classList.remove("show"), 2200);
   }
 })();
 
-// Gate: no trial + no paid → back to landing
+// Gate: redirect if no access and no trial started
 if (!localStorage.getItem(TRIAL_KEY) && !localStorage.getItem(PAID_KEY)) {
   window.location.href = "./index.html";
 }
-// Auto-start trial on first app visit
 if (!localStorage.getItem(TRIAL_KEY) && !isPaid()) {
   localStorage.setItem(TRIAL_KEY, new Date().toISOString());
 }
 
-// ── Theme ──
+// ── Theme ──────────────────────────────
 function setTheme(t) {
   document.documentElement.dataset.theme = t;
   localStorage.setItem(THEME_KEY, t);
@@ -213,59 +218,73 @@ $("themeBtn").addEventListener("click", () => {
 });
 setTheme(localStorage.getItem(THEME_KEY) || "night");
 
-// ── Date ──
-$("todayStr").textContent = new Date().toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" });
+// ── Date ───────────────────────────────
+$("dateEl").textContent = new Date().toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" });
 
-// ── Trial badge ──
+// ── Badge ──────────────────────────────
 function renderBadge() {
-  const b = $("trialBadge");
+  const b = $("badge");
   if (!b) return;
   if (isPaid()) {
-    b.textContent = "Pro"; b.className = "badge paid"; b.style.display = "";
+    b.innerHTML = `<span class="badge badge-paid">Pro</span>`;
+    b.style.display = "";
   } else {
     const d = trialDays();
     if (d === null) return;
-    b.textContent = d < 7 ? `Trial · ${7 - d}d left` : "Trial ended";
-    b.className = d < 7 ? "badge trial" : "badge";
+    b.innerHTML = d < 7
+      ? `<span class="badge badge-trial">Trial · ${7-d}d left</span>`
+      : `<span class="badge">Trial ended</span>`;
     b.style.display = "";
   }
 }
 renderBadge();
 
-// ── Panel helpers ──
-const openEl  = el => el?.classList.add("open");
-const closeEl = el => el?.classList.remove("open");
-const togEl   = el => el?.classList.toggle("open");
+// ── Mobile: show sessions button ───────
+function updateSessionsBtn() {
+  if (window.innerWidth < 820) {
+    $("openSessionsBtn").style.display = "";
+  }
+}
+updateSessionsBtn();
+window.addEventListener("resize", updateSessionsBtn);
+
+// ── Panel toggles ──────────────────────
+const open  = el => el?.classList.add("open");
+const close = el => el?.classList.remove("open");
+const tog   = el => el?.classList.toggle("open");
 
 $("openProofBtn").addEventListener("click", () => {
-  openEl($("proofPanel"));
-  setTimeout(() => $("entryText")?.focus(), 60);
+  open($("proofPanel"));
+  setTimeout(() => $("proofText").focus(), 60);
 });
-$("closeProofBtn").addEventListener("click", () => closeEl($("proofPanel")));
+$("closeProofBtn").addEventListener("click", () => close($("proofPanel")));
 
 $("openSessionsBtn").addEventListener("click", () => {
-  openEl($("sessions-panel"));
-  $("sessions-panel").scrollIntoView({ behavior:"smooth", block:"start" });
+  open($("sessions-col"));
+  $("sessions-col").scrollIntoView({ behavior:"smooth", block:"start" });
 });
-$("close-sessions-btn").addEventListener("click", () => closeEl($("sessions-panel")));
+$("close-sessions").addEventListener("click", () => close($("sessions-col")));
 
-$("toggleFocusBtn").addEventListener("click", () => {
-  togEl($("focusEditor"));
-  $("toggleFocusBtn").textContent = $("focusEditor").classList.contains("open") ? "done" : "+ edit";
+$("focusToggle").addEventListener("click", () => {
+  tog($("focusEditor"));
+  $("focusToggle").textContent = $("focusEditor").classList.contains("open") ? "Done" : "+ Add";
+  if ($("focusEditor").classList.contains("open")) {
+    setTimeout(() => $("focusInput").focus(), 60);
+  }
 });
 
-// ── Focuses ──
+// ── Focuses ───────────────────────────
 let focuses     = loadJ(FOCUSES_KEY, []);
 let activeFocus = localStorage.getItem(ACTIVE_KEY) || "";
 
-function setActive(name) {
-  activeFocus = name;
-  localStorage.setItem(ACTIVE_KEY, name);
+function setActive(f) {
+  activeFocus = f;
+  localStorage.setItem(ACTIVE_KEY, f);
   renderPills();
 }
 
 function renderPills() {
-  const c = $("focusPills");
+  const c = $("pillsEl");
   const h = $("focusHint");
   c.innerHTML = "";
   if (!focuses.length) { h.style.display = ""; return; }
@@ -276,7 +295,7 @@ function renderPills() {
   }
   focuses.forEach(f => {
     const btn = document.createElement("button");
-    btn.className = "focus-pill" + (f === activeFocus ? " active" : "");
+    btn.className = "pill" + (f === activeFocus ? " active" : "");
     btn.type = "button"; btn.textContent = f;
     btn.addEventListener("click", () => setActive(f));
     c.appendChild(btn);
@@ -292,7 +311,8 @@ $("addFocusBtn").addEventListener("click", () => {
     saveJ(FOCUSES_KEY, focuses);
   }
   if (!activeFocus) setActive(val);
-  inp.value = ""; inp.focus();
+  inp.value = "";
+  inp.focus();
   renderPills();
 });
 
@@ -309,16 +329,17 @@ $("clearFocusBtn").addEventListener("click", () => {
 
 renderPills();
 
-// ── Timer ──
+// ── Timer ─────────────────────────────
 let secs = 0, running = false, tick = null;
 
 function fmt(s) {
   return [Math.floor(s/3600), Math.floor((s%3600)/60), s%60]
     .map(n => String(n).padStart(2,"0")).join(":");
 }
+
 function renderTimer() {
   $("timerEl").textContent = fmt(secs);
-  $("timerEl").classList.toggle("running", running);
+  $("timerEl").classList.toggle("on", running);
   $("startBtn").textContent = running ? "Pause" : (secs > 0 ? "Resume" : "Start");
 }
 
@@ -327,12 +348,14 @@ $("startBtn").addEventListener("click", () => {
   else { running = false; clearInterval(tick); }
   renderTimer();
 });
+
 $("resetBtn").addEventListener("click", () => {
   running = false; clearInterval(tick); secs = 0; renderTimer();
 });
+
 renderTimer();
 
-// ── Sessions ──
+// ── Sessions ──────────────────────────
 let sessions = loadJ(SESSIONS_KEY, []);
 
 function todaysSessions() {
@@ -342,72 +365,67 @@ function todaysSessions() {
 }
 
 function renderSessions() {
-  const list  = $("sessionsList");
+  const el    = $("sessionsEl");
   const empty = $("sessionsEmpty");
   const ts    = todaysSessions();
-  const total = ts.reduce((sum, s) => sum + (s.minutes||0), 0);
+  const total = ts.reduce((sum,s) => sum + (s.minutes||0), 0);
 
-  $("savedMins").textContent = total;
+  $("totalMins").textContent = total;
   $("openSessionsBtn").textContent = ts.length ? `Sessions (${ts.length})` : "Sessions";
 
-  list.innerHTML = "";
+  el.innerHTML = "";
   if (!ts.length) { empty.style.display = ""; return; }
   empty.style.display = "none";
 
   ts.forEach(s => {
     const item = document.createElement("div");
-    item.className = "session-item";
+    item.className = "session";
 
-    const hdr = document.createElement("div");
-    hdr.className = "session-header";
+    const tag = document.createElement("div");
+    tag.className = "session-tag";
+    tag.textContent = s.focus || "—";
 
-    const left = document.createElement("div");
-    if (s.focus) {
-      const tag = document.createElement("div");
-      tag.className = "session-focus-tag";
-      tag.textContent = s.focus;
-      left.appendChild(tag);
-    }
-
-    const right = document.createElement("div");
-    const mins = document.createElement("div");
-    mins.className = "session-mins";
-    mins.textContent = `${s.minutes}m`;
-    const time = document.createElement("div");
-    time.className = "session-time";
-    time.textContent = new Date(s.createdAt).toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
-    right.appendChild(mins);
-    right.appendChild(time);
-
-    hdr.appendChild(left);
-    hdr.appendChild(right);
+    const body = document.createElement("div");
+    body.className = "session-body";
 
     const txt = document.createElement("div");
     txt.className = "session-text";
-    txt.textContent = s.text || "";
+    txt.textContent = s.text;
 
-    item.appendChild(hdr);
-    item.appendChild(txt);
-    list.appendChild(item);
+    const meta = document.createElement("div");
+    meta.className = "session-meta";
+    meta.textContent = new Date(s.createdAt).toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
+
+    body.appendChild(txt);
+    body.appendChild(meta);
+
+    const mins = document.createElement("div");
+    mins.className = "session-mins";
+    mins.textContent = `${s.minutes}m`;
+
+    item.appendChild(tag);
+    item.appendChild(body);
+    item.appendChild(mins);
+    el.appendChild(item);
   });
 }
 renderSessions();
 
-// ── Save session ──
-$("saveSessionBtn").addEventListener("click", () => {
+// ── Save session ──────────────────────
+$("saveBtn").addEventListener("click", () => {
   running = false; clearInterval(tick); renderTimer();
 
-  if (!hasAccess()) { showModal(); return; }
+  if (!hasAccess()) { showPaywall(); return; }
 
   if (!focuses.length) {
-    toast("Add at least one focus first.", "warn");
-    openEl($("focusEditor"));
-    $("toggleFocusBtn").textContent = "done";
+    toast("Add a focus first.", "toast-warn");
+    open($("focusEditor"));
+    $("focusToggle").textContent = "Done";
     return;
   }
 
-  const text = ($("entryText").value || "").trim();
-  if (!text) { toast("Write one honest paragraph first.", "warn"); return; }
+  const text = ($("proofText").value || "").trim();
+  if (!text) { toast("Write one honest paragraph first.", "toast-warn"); return; }
 
   const mins = Math.round(secs / 60);
   if (mins === 0 && !confirm("Timer is at 0 min — save anyway?")) return;
@@ -422,61 +440,96 @@ $("saveSessionBtn").addEventListener("click", () => {
   });
 
   saveJ(SESSIONS_KEY, sessions);
-  $("entryText").value = "";
+  $("proofText").value = "";
   secs = 0; renderTimer();
   renderSessions();
-  closeEl($("proofPanel"));
-  toast("Session saved ✓", "success");
+  close($("proofPanel"));
+  toast("Session saved ✓", "toast-ok");
 });
 
-// ── Delete last ──
-$("deleteLastBtn").addEventListener("click", () => {
+// ── Delete last ───────────────────────
+$("deleteBtn").addEventListener("click", () => {
   const ts = todaysSessions();
   if (!ts.length) { toast("No sessions to delete."); return; }
   if (!confirm("Delete the most recent session?")) return;
   sessions = sessions.filter(s => s.id !== ts[0].id);
   saveJ(SESSIONS_KEY, sessions);
   renderSessions();
-  toast("Session deleted.");
+  toast("Deleted.");
 });
 
-// ── Export ──
+// ── Export ─────────────────────────────
 $("exportBtn").addEventListener("click", () => {
-  const data = { date: TODAY, focuses, activeFocus, sessions };
+  const data = { date:TODAY, focuses, activeFocus, sessions };
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type:"application/json" }));
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(data,null,2)], {type:"application/json"}));
   a.download = `daily-proof-${TODAY}.json`;
-  a.click();
-  URL.revokeObjectURL(a.href);
-  toast("Exported ✓", "success");
+  a.click(); URL.revokeObjectURL(a.href);
+  toast("Exported ✓", "toast-ok");
 });
 
-// ── Paywall modal ──
-const exitModal = $("exitModal");
-let modalShown  = false;
+// ── Paywall ────────────────────────────
+const paywallModal = $("paywallModal");
+let paywallShown = false;
 
-function showModal() {
-  if (modalShown) return;
-  modalShown = true;
-  exitModal.classList.add("visible");
+function showPaywall() {
+  if (paywallShown) return;
+  paywallShown = true;
+  paywallModal.classList.add("show");
 }
 
-$("dismissModal").addEventListener("click", () => exitModal.classList.remove("visible"));
-exitModal.addEventListener("click", e => { if (e.target === exitModal) exitModal.classList.remove("visible"); });
+$("paywallSkip").addEventListener("click", () => paywallModal.classList.remove("show"));
+paywallModal.addEventListener("click", e => { if (e.target === paywallModal) paywallModal.classList.remove("show"); });
 
-// Desktop exit intent
-document.addEventListener("mouseleave", e => { if (e.clientY < 20 && !hasAccess()) showModal(); });
-
-// Mobile fast-upward scroll
-let lastY = 0;
-window.addEventListener("scroll", () => {
-  const y = window.scrollY;
-  if ((lastY - y) > 70 && y < 100 && !hasAccess()) showModal();
-  lastY = y;
-}, { passive: true });
+// Exit intent (desktop)
+document.addEventListener("mouseleave", e => { if (e.clientY < 20 && !hasAccess()) showPaywall(); });
 
 // Auto-show if trial expired
-if (!hasAccess() && trialDays() !== null) setTimeout(showModal, 700);
+if (!hasAccess() && trialDays() !== null) setTimeout(showPaywall, 700);
+
+// ── Gumroad popup (app-specific) ──────
+function openGumroadApp(url, plan) {
+  const w = 520, h = 680;
+  const left = Math.round(window.screenX + (window.outerWidth - w) / 2);
+  const top  = Math.round(window.screenY + (window.outerHeight - h) / 2);
+
+  const popup = window.open(
+    url,
+    "gumroad_checkout",
+    `width=${w},height=${h},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes`
+  );
+
+  if (!popup) { window.open(url, "_blank"); return; }
+
+  // Hide paywall, show waiting overlay
+  paywallModal.classList.remove("show");
+  const wait = $("purchaseWait");
+  $("purchaseTitle").textContent = "Completing your purchase";
+  $("purchaseSub").innerHTML = "Gumroad is open in a small window.<br>Complete your purchase there — we'll activate access automatically.";
+  $("purchaseCancel").style.display = "";
+  wait.classList.add("show");
+
+  let pollTimer = setInterval(() => {
+    if (popup.closed) {
+      clearInterval(pollTimer);
+      wait.classList.remove("show");
+
+      if (localStorage.getItem(PAID_KEY)) {
+        // Already set (e.g. via ?paid= on redirect)
+        renderBadge();
+        toast("Access activated! Welcome to Daily Proof ✓", "toast-ok");
+      }
+      // else: they closed without buying — no problem
+    }
+  }, 800);
+
+  $("purchaseCancel").onclick = () => {
+    clearInterval(pollTimer);
+    wait.classList.remove("show");
+    if (popup && !popup.closed) popup.close();
+  };
+}
 </script>
 </body>
 </html>
+
